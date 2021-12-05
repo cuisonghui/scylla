@@ -1,0 +1,681 @@
+
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title> Testing | Scylla Docs
+    </title>
+    <meta name="description" content="Scylla is an Apache Cassandra-compatible NoSQL data store that can handle 1 million transactions per second on a single server." />
+    <link
+      rel="icon"
+      href="../_static/img/favicon.ico"
+      type="image/x-icon"
+    />
+    <link
+      rel="icon"
+      href="../_static/img/favicon-32x32.png"
+      sizes="32x32"
+    />
+    <link
+      rel="icon"
+      href="../_static/img/favicon-228x228.png"
+      sizes="192x192"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="../_static/img/favicon-228x228.png"
+    />
+    <meta
+      name="msapplication-TileImage"
+      href="../_static/img/favicon-228x228.png"
+    />
+    <link rel="canonical" href="https://docs.scylladb.com/" />
+    <link rel="author" href="mailto:info@scylladb.com" />
+  <!-- connect to domain of font files -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- optionally increase loading priority -->
+  <link
+    rel="preload"
+    as="style"
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+  />
+
+  <!-- async CSS -->
+  <link
+    rel="stylesheet"
+    media="print"
+    onload="this.onload=null;this.removeAttribute('media');"
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+  />
+
+  <!-- no-JS fallback -->
+  <noscript>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+    />
+  </noscript>
+  <link
+    rel="stylesheet"
+    href="../_static/css/main.css"
+    type="text/css"
+  />
+  <link
+    rel="stylesheet"
+    href="../_static/pygments.css"
+    type="text/css"
+  /> <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+
+  <script
+    type="text/javascript"
+    id="documentation_options"
+    data-url_root="../"
+    src="../_static/documentation_options.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="../_static/js/runtime.bundle.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="../_static/js/main.bundle.js"
+  ></script> <script src="../_static/jquery.js"></script> <script src="../_static/underscore.js"></script> <script src="../_static/doctools.js"></script> <script src="../_static/language_data.js"></script> <script src="../_static/clipboard.min.js"></script> <script src="../_static/copybutton.js"></script>
+
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-T8P2JP");
+    </script>
+    <!-- End Google Tag Manager -->
+    <!-- Marketo -->
+    <script type="text/javascript">
+      (function () {
+        var didInit = false;
+        function initMunchkin() {
+          if (didInit === false) {
+            didInit = true;
+            Munchkin.init("791-QBF-350");
+          }
+        }
+        var s = document.createElement("script");
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "//munchkin.marketo.net/munchkin.js";
+        s.onreadystatechange = function () {
+          if (this.readyState == "complete" || this.readyState == "loaded") {
+            initMunchkin();
+          }
+        };
+        s.onload = initMunchkin;
+        document.getElementsByTagName("head")[0].appendChild(s);
+      })();
+    </script>
+    <!-- End Marketo -->
+    <!-- Expertrec -->
+    <script>
+      var id = "e2077224-9ccf-11e9-a0c9-0242ac130002";
+      var ci_search = document.createElement("script");
+      ci_search.type = "text/javascript";
+      ci_search.async = true;
+      ci_search.src = "https://cse.expertrec.com/api/js/ci_common.js?id=" + id;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(ci_search, s);
+    </script>
+    <!-- End Expertrec -->
+
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/b1870adf6a.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- End Font Awesome -->
+  </head>
+  
+  <body>
+     <header class="header">
+  <div class="header-logo">
+    <a class="header-logo__img" href="https://scylladb.com/">
+      <img
+        src="../_static/img/logo-scylla-docs.svg"
+        alt="Scylla Documentation Logo"
+      />
+    </a>
+    <span class="header-logo__bar"></span>
+    <a class="header-logo__text" href="https://docs.scylladb.com/">
+      Documentation
+    </a>
+  </div>
+  <div class="header-navigation">
+    <ul
+      class="dropdown menu scylla-dropdown scylla-dropdown--header"
+      data-dropdown-menu
+    >
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Server <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a href="https://docs.scylladb.com/"
+              ><i class="scylla-icon scylla-icon--about-us"></i>Scylla Open
+              Source</a
+            >
+          </li>
+          <li>
+            <a href="https://docs.scylladb.com/"
+              ><i class="scylla-icon scylla-icon--enterprise"></i>Scylla
+              Enterprise</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://scylla.docs.scylladb.com/master/alternator/alternator.html"
+            >
+              <i class="scylla-icon scylla-icon--overview"></i>Scylla
+              Alternator</a
+            >
+          </li>
+        </ul>
+      </li>
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Cloud <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a href="https://cloud.scylladb.com/">
+              <i class="scylla-icon scylla-icon--cloud"></i>Scylla Cloud</a
+            >
+          </li>
+          <li>
+            <a href="https://docs.scylladb.com/scylla-cloud/">
+              <i class="scylla-icon scylla-icon--cloud-docs"></i>Scylla Cloud
+              Docs</a
+            >
+          </li>
+        </ul>
+      </li>
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Tools <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a href="https://manager.docs.scylladb.com/">
+              <i class="scylla-icon scylla-icon--manager"></i>Scylla Manager</a
+            >
+          </li>
+          <li>
+            <a href="https://monitoring.docs.scylladb.com/">
+              <i class="scylla-icon scylla-icon--monitoring"></i>Scylla
+              Monitoring Stack</a
+            >
+          </li>
+          <li>
+            <a href="https://operator.docs.scylladb.com/">
+              <i class="scylla-icon scylla-icon--operator"></i>Scylla Operator
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Drivers <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a
+              href="https://docs.scylladb.com/using-scylla/drivers/cql-drivers/"
+            >
+              <i class="scylla-icon scylla-icon--nsql-guides"></i>CQL Drivers
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://docs.scylladb.com/using-scylla/drivers/dynamo-drivers/"
+            >
+              <i class="scylla-icon scylla-icon--overview"></i>DynamoDB Drivers
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <div class="header-button">
+      <a href="https://www.scylladb.com/download/" class="button">Download</a>
+    </div>
+  </div>
+  <div class="header-search-box">
+    <div class="search-box">
+      <ci-search></ci-search>
+    </div>
+  </div>
+  <div class="side-nav-toggle" data-toggle="side-nav">
+  <div class="side-nav-toggle__button">
+    <img src="../_static/img/menu.svg" alt="Menu" />
+  </div>
+</div>
+</header>
+    <section class="layout ">
+      <div class="content large-order-2">
+         
+
+        <div class="admonition caution">
+          <p class="admonition-title">Caution</p>
+          <p>
+             You
+            are not reading the most current version of the documentation.  If you want up-to-date information, please have a look at
+
+            <a href="../../stable/guides/testing.html">
+               4.5  </a
+            >.
+          </p>
+        </div>
+        
+
+        <div class="pre-content">
+          <div class="pre-content__left"><div class="breadcrumbs">
+  <span class="bread__item">
+    <a
+      href="https://scylla.docs.scylladb.com"
+      class="bread__highlight"
+    >
+      <i class="fas fa-home"></i> Scylla Documentation</a
+    ></span
+  >
+  
+  <span class="bread__item"
+    ><a href="index.html">Guides</a></span
+  >
+  
+  <span class="bread__item bread__item--last">Testing</span>
+</div></div>
+          <div class="pre-content__right"><ul
+  class="dropdown menu scylla-dropdown scylla-dropdown--contribute"
+  data-dropdown-menu
+>
+  <li class="scylla-dropdown__item">
+    <a class="scylla-dropdown__title" href="#">
+      <div class="scylla-dropdown__title--body">
+        <i class="icon fa fa-github" aria-hidden="true"></i>
+        Contribute
+      </div>
+      <i class="chevron scylla-icon scylla-icon--chevron-right"></i>
+    </a>
+    <ul class="menu scylla-dropdown__content">
+      <li>
+        <a
+          href="https://github.com/scylladb/scylla/issues/new?title=Issue in page Testing&&body=I%20would%20like%20to%20report%20an%20issue%20in%20page%20https://scylla.docs.scylladb.com/branch-4.4/guides/testing%0A%0A%23%23%23%20Problem%0A%0A%23%23%23%20%20Suggest%20a%20fix"
+          target="_blank"
+          >Report a doc issue
+          <i class="icon fa fa-external-link" aria-hidden="true"></i
+        ></a>
+      </li>
+      
+      <li>
+             
+        <a
+          href="https://github.com/scylladb/scylla/edit/branch-4.4/docs/guides/testing.md"
+          target="_blank"
+          >Edit this page
+          <i class="icon fa fa-external-link" aria-hidden="true"></i
+        ></a>
+      </li>
+      
+      <li>
+        <a href="https://docs.scylladb.com/contribute/" target="_blank"
+          >Learn how to contribute
+          <i class="icon fa fa-external-link" aria-hidden="true"></i
+        ></a>
+      </li>
+    </ul>
+  </li>
+</ul></div>
+        </div>
+         <div class="section" id="testing">
+<h1>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">test.py</span></code> is a simple regression testing harness shipped along with
+scylla.git, which runs C++ unit and CQL tests.</p>
+<p>This is a manual for <code class="docutils literal notranslate"><span class="pre">test.py</span></code>.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>To run <code class="docutils literal notranslate"><span class="pre">test.py</span></code>, Python 3.7 or higher is required.
+<code class="docutils literal notranslate"><span class="pre">./install-dependencies.sh</span></code> should install all the required Python
+modules. If <code class="docutils literal notranslate"><span class="pre">install-dependencies.sh</span></code> does not support your distribution,
+please manually install all Python modules it lists with <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>In order to invoke <code class="docutils literal notranslate"><span class="pre">test.py</span></code>, you need to build first. <code class="docutils literal notranslate"><span class="pre">./test.py</span></code> will
+run all existing tests in all configured build modes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./test.py
+</pre></div>
+</div>
+<p>If you want to specify a specific build mode:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./test.py --mode=dev
+</pre></div>
+</div>
+<p>If you want to run only a specific test:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./test.py suitename/testname
+</pre></div>
+</div>
+<p>Build artefacts, such as test output and harness output is stored
+in <code class="docutils literal notranslate"><span class="pre">./testlog</span></code>. Scylla data files are stored in <code class="docutils literal notranslate"><span class="pre">/tmp</span></code>.</p>
+</div>
+<div class="section" id="how-it-works">
+<h2>How it works<a class="headerlink" href="#how-it-works" title="Permalink to this headline">¶</a></h2>
+<p>On start, <code class="docutils literal notranslate"><span class="pre">test.py</span></code> invokes <code class="docutils literal notranslate"><span class="pre">ninja</span></code> to find out configured build modes. Then
+it searches all subdirectories of <code class="docutils literal notranslate"><span class="pre">./test/</span></code> for <code class="docutils literal notranslate"><span class="pre">suite.yaml</span></code> files: each
+directory containing <code class="docutils literal notranslate"><span class="pre">suite.yaml</span></code> is a test suite, in which <code class="docutils literal notranslate"><span class="pre">test.py</span></code> then looks
+for tests. All files ending with <code class="docutils literal notranslate"><span class="pre">_test.cc</span></code> or <code class="docutils literal notranslate"><span class="pre">_test.cql</span></code> are considered
+tests.</p>
+<p>A suite must contain tests of the same type, as configured in <code class="docutils literal notranslate"><span class="pre">suite.yaml</span></code>.
+The list of found tests is matched with the optional command line test name
+filter. A match is registered if filter substring exists anywhere in test
+full name. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./test.py cql
+</pre></div>
+</div>
+<p>runs <code class="docutils literal notranslate"><span class="pre">cql/lwt_test</span></code>, <code class="docutils literal notranslate"><span class="pre">cql/lwt_batch_test</span></code>, as well as
+<code class="docutils literal notranslate"><span class="pre">boost/cql_query_test</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">./testlog</span></code> directory is created if it doesn’t exist, otherwise it is
+cleared from the previous run artefacts.</p>
+<p>Matched tests are run concurrently, with concurrency factor set to the
+number of available CPU cores. <code class="docutils literal notranslate"><span class="pre">test.py</span></code> continues until all tests are run
+even if any one of them fails.</p>
+</div>
+<div class="section" id="cql-tests">
+<h2>CQL tests<a class="headerlink" href="#cql-tests" title="Permalink to this headline">¶</a></h2>
+<p>To run CQL tests, <code class="docutils literal notranslate"><span class="pre">test.py</span></code> uses an auxiliary program, <code class="docutils literal notranslate"><span class="pre">test/tools/cql_repl.cc</span></code>.
+This program reads CQL input from stdin, evaluates it using Scylla CQL
+database front-end, and prints output in JSON format to stdout. A default
+keyspace is created automatically.</p>
+<p><code class="docutils literal notranslate"><span class="pre">test.py</span></code> invokes <code class="docutils literal notranslate"><span class="pre">cql_repl</span></code> providing the test file for its standard
+input and redirecting its output to a temporary file in <code class="docutils literal notranslate"><span class="pre">testlog</span></code> directory.</p>
+<p>After <code class="docutils literal notranslate"><span class="pre">cql_repl</span></code> finishes, <code class="docutils literal notranslate"><span class="pre">test.py</span></code> compares the output stored in the
+temporary file with a pre-recorded output stored in
+<code class="docutils literal notranslate"><span class="pre">test/suitename/testname_test.result</span></code>.</p>
+<p>The test is considered failed if executing any CQL statement produced an
+error (e.g.  because the server crashed during execution) or server output
+does not match one recorded in <code class="docutils literal notranslate"><span class="pre">testname.result</span></code>, or there is no
+<code class="docutils literal notranslate"><span class="pre">testname.result</span></code>. The latter is possible when it’s the first invocation of
+the test ever.</p>
+<p>In the event of output mismatch file <code class="docutils literal notranslate"><span class="pre">test/suitename/testname_test.reject</span></code>
+is created, and first lines of the diff between the two files are output.
+To update <code class="docutils literal notranslate"><span class="pre">.result</span></code> file with new output, simply overwrite it with the
+reject file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mv</span> <span class="n">test</span><span class="o">/</span><span class="n">suitename</span><span class="o">/</span><span class="n">testname</span><span class="o">.</span><span class="n">re</span><span class="o">*</span>
+</pre></div>
+</div>
+<p><em>Note</em> Since the result file is effectively part of the test, developers
+must thorougly examine the diff and understand the reasons for every
+change before overwriting <code class="docutils literal notranslate"><span class="pre">.result</span></code> files.</p>
+</div>
+<div class="section" id="unit-tests">
+<h2>Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h2>
+<p>The same unit test can be run in different seastar configurations, i.e. with
+different command line arguments. The custom arguments can be set in
+<code class="docutils literal notranslate"><span class="pre">custom_args</span></code> key of the <code class="docutils literal notranslate"><span class="pre">suite.yaml</span></code> file.</p>
+</div>
+<div class="section" id="debugging">
+<h2>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h2>
+<p>If a test fails, its log can be found in <code class="docutils literal notranslate"><span class="pre">testlog/${mode}/testname.log</span></code>.
+By default, all unit tests are built stripped. To build non-stripped tests,
+<code class="docutils literal notranslate"><span class="pre">./configure</span></code> with <code class="docutils literal notranslate"><span class="pre">--tests-debuginfo</span> <span class="pre">list-of-tests</span></code>.
+<code class="docutils literal notranslate"><span class="pre">test.py</span></code> adds some command line arguments to unit tests. The exact way in
+which the test is invoked is recorded in <code class="docutils literal notranslate"><span class="pre">testlog/test.py.log</span></code>.</p>
+<p>To debug CQL tests, one can invoke <code class="docutils literal notranslate"><span class="pre">gdb</span> <span class="pre">cql_repl</span></code>, which will start
+<code class="docutils literal notranslate"><span class="pre">cql_repl</span></code> in interactive mode, and then supply faulty CQL statements
+on the terminal.</p>
+</div>
+<div class="section" id="automation">
+<h2>Automation<a class="headerlink" href="#automation" title="Permalink to this headline">¶</a></h2>
+<p>If any of the tests fails, <code class="docutils literal notranslate"><span class="pre">test.py</span></code> returns a non-zero exit status.
+JUNIT and XUNIT execution status XML files can be found in
+<code class="docutils literal notranslate"><span class="pre">testlog/${mode}/xml/</span></code> directory.</p>
+</div>
+<div class="section" id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<p>For command line help and available options, please see also:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    $ ./test.py --help
+</pre></div>
+</div>
+</div>
+</div>
+  <div class="content-navigation">
+  <div class="navigation navigation--prev">
+    <a class="navigation__link" href="logging.html">
+      <button class="navigation__button">
+        <i class="scylla-icon scylla-icon--chevron-left"></i>
+      </button>
+      <div class="navigation__title">
+        <span class="colored">PREVIOUS</span> <br />Logging in Scylla
+      </div>
+    </a>
+  </div>
+  <div class="navigation navigation--next">
+    <a class="navigation__link" href="tracing.html">
+      <div class="navigation__title">
+        <span class="colored">NEXT</span> <br />Tracing
+      </div>
+      <button class="navigation__button">
+        <i class="scylla-icon scylla-icon--chevron-right"></i>
+      </button>
+    </a>
+  </div>
+</div> 
+      </div>
+      <div
+        class="sidebar-left  large-order-1"
+      > <div id="side-nav" class="side-nav" data-closable data-toggler=".show">
+  <div class="side-nav__search">
+    <div class="search-box">
+      <ci-search></ci-search>
+    </div>
+  </div>
+  <div class="side-nav__versions">
+     <ul
+  class="dropdown menu scylla-dropdown scylla-dropdown--versions "
+  data-dropdown-menu
+>
+  <li class="scylla-dropdown__item">
+    <a class="scylla-dropdown__title" href="#">
+       4.4 
+      <i class="chevron scylla-icon scylla-icon--chevron-right"></i>
+    </a>
+    <ul class="menu scylla-dropdown__content"> 
+      <li>
+        <a href="../../stable/guides/testing.html"
+          >4.5</a
+        >
+      </li>
+       
+      <li>
+        <a href="testing.html"
+          >4.4</a
+        >
+      </li>
+       
+    </ul>
+  </li>
+</ul> 
+  </div>
+  <div class="side-nav__content">
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Scylla Developer Documentation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../alternator/alternator.html">Alternator: DynamoDB API in Scylla</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="scylla-icon scylla-icon--expand"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../alternator/getting-started.html">Getting Started With ScyllaDB Alternator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alternator/compatibility.html">Scylla Alternator for DynamoDB users</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../design-notes/index.html">Design Notes</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="scylla-icon scylla-icon--expand"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/IDL.html">IDL definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/cdc.html">CDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/compaction_controller.html">The Compaction Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/cql-extensions.html">Scylla CQL extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/cql3-type-mapping.html">CQL3 Type Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/hinted_handoff_design.html">Hinted Handoff Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/in_memory_representation.html">In-Memory Representation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/isolation.html">Performance Isolation in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/lua-type-mapping.html">CQL to Lua type mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/metrics.html">Scylla Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/migrating-from-users-to-roles.html">Migrating from users to roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/paged-queries.html">Paged queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/protocol-extensions.html">Protocol extensions to the Cassandra Native Protocol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/protocols.html">Ports and protocols in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/redis.html">Redis API in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/repair_based_node_ops.html">Repair based node operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/row_cache.html">Row Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/row_level_repair.html">Row level repair</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/secondary_index.html">Secondary indexes in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/sstable-scylla-format.html">File format of the Scylla.db sstable component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/sstables-directory-structure.html">sstables directory structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/system_keyspace.html">System keyspace layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/system_schema_keyspace.html">System schema keyspace layout</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Guides</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="scylla-icon scylla-icon--expand"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="HACKING.html">Guidelines for developing Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_v2.html">Scylla RESTful API V2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="building.html">Building Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html">Debugging with GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker-hub.html">Docker Hub Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html">Logging in Scylla</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tracing.html">Tracing</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contribute/index.html">Contribute</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="scylla-icon scylla-icon--expand"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/backport.html">Backport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/coding-style.html">Scylla Coding Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/maintainer.html">Maintainer’s handbook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/review-checklist.html">Review Checklist</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</div>
+      </div>
+      
+      <div class="sidebar-right large-order-3">
+         <div class="secondary-side-nav">
+  <div class="secondary-side-nav__content">
+    <p class="topic-title">On this page</p>
+    <ul>
+<li><a class="reference internal" href="#">Testing</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#how-it-works">How it works</a></li>
+<li><a class="reference internal" href="#cql-tests">CQL tests</a></li>
+<li><a class="reference internal" href="#unit-tests">Unit tests</a></li>
+<li><a class="reference internal" href="#debugging">Debugging</a></li>
+<li><a class="reference internal" href="#automation">Automation</a></li>
+<li><a class="reference internal" href="#see-also">See also</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</div> 
+      </div>
+    </section>
+
+    <footer class="footer">
+  <div class="footer-group">
+    <div class="footer-top">
+      <a class="footer-logo" href="https://www.scylladb.com"
+        ><img
+          src="../_static/img/logo-scylla-horizontal-RGB.svg"
+          alt="Logo"
+      /></a>
+      <div class="footer-links">
+        <a class="footer-links__link" href="https://docs.scylladb.com/">Docs</a>
+        <a
+          class="footer-links__link"
+          href="https://www.scylladb.com/company/contact-us/"
+          >Contact Us</a
+        >
+        <a class="footer-links__link" href="https://www.scylladb.com/company/"
+          >About Us</a
+        >
+      </div>
+      <div class="footer-actions">
+        <a
+          class="footer-actions__link"
+          href="https://groups.google.com/g/scylladb-users"
+          target="_blank"
+          ><span
+            data-tooltip
+            tabindex="1"
+            title="User mailing list"
+            data-position="bottom"
+          >
+            <img
+              src="../_static/img/icons/icon-mail-list.svg"
+              alt="Mail List Icon"
+            />
+          </span>
+        </a>
+        <a
+          class="footer-actions__link"
+          href="http://slack.scylladb.com/"
+          target="_blank"
+          ><span
+            data-tooltip
+            tabindex="1"
+            title="User Slack channel"
+            data-position="bottom"
+          >
+            <img
+              src="../_static/img/icons/icon-slack.svg"
+              alt="Slack Icon"
+          /></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom__copyright"> &#169; 2021, ScyllaDB. All rights reserved.
+      </div>
+      <div class="footer-bottom__last-updated">
+        Last updated on 05 December 2021.
+      </div>
+      <div class="footer-bottom__version">
+        Powered by
+        <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a> &amp;
+        <a href="https://sphinx-theme.scylladb.com/"
+          >ScyllaDB Theme 1.0.5</a
+        >
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <noscript>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-T8P2JP"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe>
+    </noscript>
+  </body>
+</html>

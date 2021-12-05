@@ -1,0 +1,873 @@
+
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title> Row level repair | Scylla Docs
+    </title>
+    <meta name="description" content="Scylla is an Apache Cassandra-compatible NoSQL data store that can handle 1 million transactions per second on a single server." />
+    <link
+      rel="icon"
+      href="../_static/img/favicon.ico"
+      type="image/x-icon"
+    />
+    <link
+      rel="icon"
+      href="../_static/img/favicon-32x32.png"
+      sizes="32x32"
+    />
+    <link
+      rel="icon"
+      href="../_static/img/favicon-228x228.png"
+      sizes="192x192"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="../_static/img/favicon-228x228.png"
+    />
+    <meta
+      name="msapplication-TileImage"
+      href="../_static/img/favicon-228x228.png"
+    />
+    <link rel="canonical" href="https://docs.scylladb.com/" />
+    <link rel="author" href="mailto:info@scylladb.com" />
+  <!-- connect to domain of font files -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- optionally increase loading priority -->
+  <link
+    rel="preload"
+    as="style"
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+  />
+
+  <!-- async CSS -->
+  <link
+    rel="stylesheet"
+    media="print"
+    onload="this.onload=null;this.removeAttribute('media');"
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+  />
+
+  <!-- no-JS fallback -->
+  <noscript>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+    />
+  </noscript>
+  <link
+    rel="stylesheet"
+    href="../_static/css/main.css"
+    type="text/css"
+  />
+  <link
+    rel="stylesheet"
+    href="../_static/pygments.css"
+    type="text/css"
+  /> <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+
+  <script
+    type="text/javascript"
+    id="documentation_options"
+    data-url_root="../"
+    src="../_static/documentation_options.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="../_static/js/runtime.bundle.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="../_static/js/main.bundle.js"
+  ></script> <script src="../_static/jquery.js"></script> <script src="../_static/underscore.js"></script> <script src="../_static/doctools.js"></script> <script src="../_static/language_data.js"></script> <script src="../_static/clipboard.min.js"></script> <script src="../_static/copybutton.js"></script>
+
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-T8P2JP");
+    </script>
+    <!-- End Google Tag Manager -->
+    <!-- Marketo -->
+    <script type="text/javascript">
+      (function () {
+        var didInit = false;
+        function initMunchkin() {
+          if (didInit === false) {
+            didInit = true;
+            Munchkin.init("791-QBF-350");
+          }
+        }
+        var s = document.createElement("script");
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "//munchkin.marketo.net/munchkin.js";
+        s.onreadystatechange = function () {
+          if (this.readyState == "complete" || this.readyState == "loaded") {
+            initMunchkin();
+          }
+        };
+        s.onload = initMunchkin;
+        document.getElementsByTagName("head")[0].appendChild(s);
+      })();
+    </script>
+    <!-- End Marketo -->
+    <!-- Expertrec -->
+    <script>
+      var id = "e2077224-9ccf-11e9-a0c9-0242ac130002";
+      var ci_search = document.createElement("script");
+      ci_search.type = "text/javascript";
+      ci_search.async = true;
+      ci_search.src = "https://cse.expertrec.com/api/js/ci_common.js?id=" + id;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(ci_search, s);
+    </script>
+    <!-- End Expertrec -->
+
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/b1870adf6a.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- End Font Awesome -->
+  </head>
+  
+  <body>
+     <header class="header">
+  <div class="header-logo">
+    <a class="header-logo__img" href="https://scylladb.com/">
+      <img
+        src="../_static/img/logo-scylla-docs.svg"
+        alt="Scylla Documentation Logo"
+      />
+    </a>
+    <span class="header-logo__bar"></span>
+    <a class="header-logo__text" href="https://docs.scylladb.com/">
+      Documentation
+    </a>
+  </div>
+  <div class="header-navigation">
+    <ul
+      class="dropdown menu scylla-dropdown scylla-dropdown--header"
+      data-dropdown-menu
+    >
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Server <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a href="https://docs.scylladb.com/"
+              ><i class="scylla-icon scylla-icon--about-us"></i>Scylla Open
+              Source</a
+            >
+          </li>
+          <li>
+            <a href="https://docs.scylladb.com/"
+              ><i class="scylla-icon scylla-icon--enterprise"></i>Scylla
+              Enterprise</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://scylla.docs.scylladb.com/master/alternator/alternator.html"
+            >
+              <i class="scylla-icon scylla-icon--overview"></i>Scylla
+              Alternator</a
+            >
+          </li>
+        </ul>
+      </li>
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Cloud <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a href="https://cloud.scylladb.com/">
+              <i class="scylla-icon scylla-icon--cloud"></i>Scylla Cloud</a
+            >
+          </li>
+          <li>
+            <a href="https://docs.scylladb.com/scylla-cloud/">
+              <i class="scylla-icon scylla-icon--cloud-docs"></i>Scylla Cloud
+              Docs</a
+            >
+          </li>
+        </ul>
+      </li>
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Tools <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a href="https://manager.docs.scylladb.com/">
+              <i class="scylla-icon scylla-icon--manager"></i>Scylla Manager</a
+            >
+          </li>
+          <li>
+            <a href="https://monitoring.docs.scylladb.com/">
+              <i class="scylla-icon scylla-icon--monitoring"></i>Scylla
+              Monitoring Stack</a
+            >
+          </li>
+          <li>
+            <a href="https://operator.docs.scylladb.com/">
+              <i class="scylla-icon scylla-icon--operator"></i>Scylla Operator
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Drivers <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a
+              href="https://docs.scylladb.com/using-scylla/drivers/cql-drivers/"
+            >
+              <i class="scylla-icon scylla-icon--nsql-guides"></i>CQL Drivers
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://docs.scylladb.com/using-scylla/drivers/dynamo-drivers/"
+            >
+              <i class="scylla-icon scylla-icon--overview"></i>DynamoDB Drivers
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <div class="header-button">
+      <a href="https://www.scylladb.com/download/" class="button">Download</a>
+    </div>
+  </div>
+  <div class="header-search-box">
+    <div class="search-box">
+      <ci-search></ci-search>
+    </div>
+  </div>
+  <div class="side-nav-toggle" data-toggle="side-nav">
+  <div class="side-nav-toggle__button">
+    <img src="../_static/img/menu.svg" alt="Menu" />
+  </div>
+</div>
+</header>
+    <section class="layout ">
+      <div class="content large-order-2">
+         
+
+        <div class="admonition caution">
+          <p class="admonition-title">Caution</p>
+          <p>
+             You are
+            reading an unstable version of this documentation.  If you want up-to-date information, please have a look at
+
+            <a href="../../stable/design-notes/row_level_repair.html">
+               4.5  </a
+            >.
+          </p>
+        </div>
+        
+
+        <div class="pre-content">
+          <div class="pre-content__left"><div class="breadcrumbs">
+  <span class="bread__item">
+    <a
+      href="https://scylla.docs.scylladb.com"
+      class="bread__highlight"
+    >
+      <i class="fas fa-home"></i> Scylla Documentation</a
+    ></span
+  >
+  
+  <span class="bread__item"
+    ><a href="index.html">Design Notes</a></span
+  >
+  
+  <span class="bread__item bread__item--last">Row level repair</span>
+</div></div>
+          <div class="pre-content__right"><ul
+  class="dropdown menu scylla-dropdown scylla-dropdown--contribute"
+  data-dropdown-menu
+>
+  <li class="scylla-dropdown__item">
+    <a class="scylla-dropdown__title" href="#">
+      <div class="scylla-dropdown__title--body">
+        <i class="icon fa fa-github" aria-hidden="true"></i>
+        Contribute
+      </div>
+      <i class="chevron scylla-icon scylla-icon--chevron-right"></i>
+    </a>
+    <ul class="menu scylla-dropdown__content">
+      <li>
+        <a
+          href="https://github.com/scylladb/scylla/issues/new?title=Issue in page Row level repair&&body=I%20would%20like%20to%20report%20an%20issue%20in%20page%20https://scylla.docs.scylladb.com/master/design-notes/row_level_repair%0A%0A%23%23%23%20Problem%0A%0A%23%23%23%20%20Suggest%20a%20fix"
+          target="_blank"
+          >Report a doc issue
+          <i class="icon fa fa-external-link" aria-hidden="true"></i
+        ></a>
+      </li>
+      
+      <li>
+             
+        <a
+          href="https://github.com/scylladb/scylla/edit/master/docs/design-notes/row_level_repair.md"
+          target="_blank"
+          >Edit this page
+          <i class="icon fa fa-external-link" aria-hidden="true"></i
+        ></a>
+      </li>
+      
+      <li>
+        <a href="https://docs.scylladb.com/contribute/" target="_blank"
+          >Learn how to contribute
+          <i class="icon fa fa-external-link" aria-hidden="true"></i
+        ></a>
+      </li>
+    </ul>
+  </li>
+</ul></div>
+        </div>
+         <div class="section" id="row-level-repair">
+<h1>Row level repair<a class="headerlink" href="#row-level-repair" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="how-the-the-partition-level-repair-works">
+<h2>How the the partition level repair works<a class="headerlink" href="#how-the-the-partition-level-repair-works" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>The repair master decides which ranges to work on.</p></li>
+<li><p>The repair master splits the ranges to sub ranges which contains around 100
+partitions.</p></li>
+<li><p>The repair master computes the checksum of the 100 partitions and asks the
+related peers to compute the checksum of the 100 partitions.</p></li>
+<li><p>If the checksum matches, the data in this sub range is synced.</p></li>
+<li><p>If the checksum mismatches, repair master fetches the data from all the peers
+and sends back the merged data to peers.</p></li>
+</ul>
+</div>
+<div class="section" id="major-problems-with-partition-level-repair">
+<h2>Major problems with partition level repair<a class="headerlink" href="#major-problems-with-partition-level-repair" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>A mismatch of a single row in any of the 100 partitions causes 100
+partitions to be transferred. A single partition can be very large. Not to
+mention the size of 100 partitions.</p></li>
+<li><p>Checksum (find the mismatch) and streaming (fix the mismatch) will read the
+same data twice</p></li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h2>Row level repair<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Row level checksum and synchronization: detect row level mismatch and transfer
+only the mismatch</p>
+</div>
+<div class="section" id="how-the-row-level-repair-works">
+<h2>How the row level repair works<a class="headerlink" href="#how-the-row-level-repair-works" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>To solve the problem of reading data twice</p></li>
+</ul>
+<p>Read the data only once for both checksum and synchronization between nodes.</p>
+<p>We work on a small range which contains only a few mega bytes of rows,
+We read all the rows within the small range into memory. Find the
+mismatch and send the mismatch rows between peers.</p>
+<p>We need to find a sync boundary among the nodes which contains only N bytes of
+rows.</p>
+<ul class="simple">
+<li><p>To solve the problem of sending unnecessary data.</p></li>
+</ul>
+<p>We need to find the mismatched rows between nodes and only send the delta.
+The problem is called set reconciliation problem which is a common problem in
+distributed systems.</p>
+<p>For example:</p>
+<ul class="simple">
+<li><p>Node1 has set1 = {row1, row2, row3}</p></li>
+<li><p>Node2 has set2 = {      row2, row3}</p></li>
+<li><p>Node3 has set3 = {row1, row2, row4}</p></li>
+</ul>
+<p>To repair:</p>
+<ul class="simple">
+<li><p>Node1 fetches nothing from Node2 (set2 - set1), fetches row4 (set3 - set1) from Node3.</p></li>
+<li><p>Node1 sends row1 and row4 (set1 + set2 + set3 - set2) to Node2.</p></li>
+<li><p>Node1 sends row3 (set1 + set2 + set3 - set3) to Node3.</p></li>
+</ul>
+</div>
+<div class="section" id="how-to-implement-repair-with-set-reconciliation">
+<h2>How to implement repair with set reconciliation<a class="headerlink" href="#how-to-implement-repair-with-set-reconciliation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Step A: Negotiate sync boundary</p></li>
+</ul>
+<p>class repair_sync_boundary {
+dht::decorated_key pk;
+position_in_partition position
+}</p>
+<p>Reads rows from disk into row buffers until the size is larger than N
+bytes. Return the repair_sync_boundary of the last mutation_fragment we
+read from disk. The smallest repair_sync_boundary of all nodes is
+set as the current_sync_boundary.</p>
+<ul class="simple">
+<li><p>Step B: Get missing rows from peer nodes so that repair master contains all the rows</p></li>
+</ul>
+<p>Request combined hashes from all nodes between last_sync_boundary and
+current_sync_boundary. If the combined hashes from all nodes are identical,
+data is synced, goto Step A. If not, request the full hashes from peers.</p>
+<p>At this point, the repair master knows exactly what rows are missing. Request the
+missing rows from peer nodes.</p>
+<p>Now, local node contains all the rows.</p>
+<ul class="simple">
+<li><p>Step C: Send missing rows to the peer nodes</p></li>
+</ul>
+<p>Since local node also knows what peer nodes own, it sends the missing rows to
+the peer nodes.</p>
+</div>
+<div class="section" id="how-the-rpc-api-looks-like">
+<h2>How the RPC API looks like<a class="headerlink" href="#how-the-rpc-api-looks-like" title="Permalink to this headline">¶</a></h2>
+<p>Start:</p>
+<ul class="simple">
+<li><p>repair_range_start()</p></li>
+</ul>
+<p>Step A:</p>
+<ul class="simple">
+<li><p>get_sync_boundary()</p></li>
+</ul>
+<p>Step B:</p>
+<ul class="simple">
+<li><p>get_combined_row_hashes()</p></li>
+<li><p>get_full_row_hashes()</p></li>
+<li><p>get_row_diff()</p></li>
+</ul>
+<p>Step C:</p>
+<ul class="simple">
+<li><p>put_row_diff()</p></li>
+</ul>
+<p>Finish:</p>
+<ul class="simple">
+<li><p>repair_range_stop()</p></li>
+</ul>
+</div>
+<div class="section" id="performance-evaluation">
+<h2>Performance evaluation<a class="headerlink" href="#performance-evaluation" title="Permalink to this headline">¶</a></h2>
+<p>We created a cluster of 3 Scylla nodes on AWS using i3.xlarge instance. We
+created a keyspace with a replication factor of 3 and inserted 1 billion
+rows to each of the 3 nodes. Each node has 241 GiB of data.
+We tested 3 cases below.</p>
+<div class="section" id="synced-one-of-the-node-has-zero-data-the-other-two-nodes-have-1-billion-identical-rows">
+<h3>1) 0% synced: one of the node has zero data. The other two nodes have 1 billion identical rows.<a class="headerlink" href="#synced-one-of-the-node-has-zero-data-the-other-two-nodes-have-1-billion-identical-rows" title="Permalink to this headline">¶</a></h3>
+<p>Time to repair:</p>
+<ul class="simple">
+<li><p>old = 87 min</p></li>
+<li><p>new = 70 min (rebuild took 50 minutes)</p></li>
+<li><p>improvement = 19.54%</p></li>
+</ul>
+</div>
+<div class="section" id="synced-all-of-the-3-nodes-have-1-billion-identical-rows">
+<h3>2) 100% synced: all of the 3 nodes have 1 billion identical rows.<a class="headerlink" href="#synced-all-of-the-3-nodes-have-1-billion-identical-rows" title="Permalink to this headline">¶</a></h3>
+<p>Time to repair:</p>
+<ul class="simple">
+<li><p>old = 43 min</p></li>
+<li><p>new = 24 min</p></li>
+<li><p>improvement = 44.18%</p></li>
+</ul>
+</div>
+<div class="section" id="synced-each-node-has-1-billion-identical-rows-and-1-billion-0-1-distinct-rows">
+<h3>3) 99.9% synced: each node has 1 billion identical rows and 1 billion * 0.1% distinct rows.<a class="headerlink" href="#synced-each-node-has-1-billion-identical-rows-and-1-billion-0-1-distinct-rows" title="Permalink to this headline">¶</a></h3>
+<p>Time to repair:</p>
+<ul class="simple">
+<li><p>old: 211 min</p></li>
+<li><p>new: 44 min</p></li>
+<li><p>improvement: 79.15%</p></li>
+</ul>
+<p>Bytes sent on wire for repair:</p>
+<ul class="simple">
+<li><p>old: tx= 162 GiB,  rx = 90 GiB</p></li>
+<li><p>new: tx= 1.15 GiB, tx = 0.57 GiB</p></li>
+<li><p>improvement: tx = 99.29%, rx = 99.36%</p></li>
+</ul>
+<p>It is worth noting that row level repair sends and receives exactly the
+number of rows needed in theory.</p>
+<p>In this test case, repair master needs to receives 2 million rows and
+sends 4 million rows. Here are the details: Each node has 1 billion *
+0.1% distinct rows, that is 1 million rows. So repair master receives 1
+million rows from repair follower 1 and 1 million rows from repair follower 2.
+Repair master sends 1 million rows from repair master and 1 million rows
+received from repair follower 1 to repair follower 2. Repair master sends
+sends 1 million rows from repair master and 1 million rows received from
+repair follower 2 to repair follower 1.</p>
+<p>In the result, we saw the rows on wire were as expected.</p>
+<p>tx_row_nr  = 1000505 + 999619 + 1001257 + 998619 (4 shards, the numbers are for each shard) = 4’000’000
+rx_row_nr  =  500233 + 500235 +  499559 + 499973 (4 shards, the numbers are for each shard) = 2’000’000</p>
+</div>
+</div>
+<div class="section" id="rpc-stream-usage-in-repair">
+<h2>RPC stream usage in repair<a class="headerlink" href="#rpc-stream-usage-in-repair" title="Permalink to this headline">¶</a></h2>
+<p>Some of the RPC verbs used by row level repair can transmit bulk of data,
+namely REPAIR_GET_FULL_ROW_HASHES, REPAIR_GET_ROW_DIFF and REPAIR_PUT_ROW_DIFF.
+To have better repair bandwidth with high latency link, we want to increase the
+row buff size.  It is more efficient to send large amount of data with RPC
+stream interface instead of the RPC verb interface.  We want to switch to RPC
+stream for such RPC verbs. Three functions, get_full_row_hashes(),
+get_row_diff() and put_row_diff(), are converted to use the new RPC stream
+interface.</p>
+<div class="section" id="get-full-row-hashes">
+<h3>1) get_full_row_hashes()<a class="headerlink" href="#get-full-row-hashes" title="Permalink to this headline">¶</a></h3>
+<p>A new REPAIR_GET_FULL_ROW_HASHES_WITH_RPC_STREAM rpc veb is introduced.</p>
+<div class="section" id="the-repair-master-sends-repair-stream-cmd">
+<h4>The repair master sends: repair_stream_cmd.<a class="headerlink" href="#the-repair-master-sends-repair-stream-cmd" title="Permalink to this headline">¶</a></h4>
+<p>The repair_stream_cmd can be:</p>
+<ul class="simple">
+<li><p>repair_stream_cmd::get_full_row_hashes
+Asks the repair follower to send all the hashes in working row buffer.</p></li>
+</ul>
+</div>
+<div class="section" id="the-repair-follower-replies-repair-hash-with-cmd">
+<h4>The repair follower replies: repair_hash_with_cmd.<a class="headerlink" href="#the-repair-follower-replies-repair-hash-with-cmd" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">repair_hash_with_cmd</span> <span class="p">{</span>
+    <span class="n">repair_stream_cmd</span> <span class="n">cmd</span><span class="p">;</span>
+    <span class="n">repair_hash</span> <span class="nb">hash</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The repair_stream_cmd in repair_hash_with_cmd can be:</p>
+<ul class="simple">
+<li><p>repair_stream_cmd::hash_data
+One of the hashes in the working row buffer. The hash is stored in repair_hash_with_cmd.hash.</p></li>
+<li><p>repair_stream_cmd::end_of_current_hash_set
+Notifies repair master that  repair follower has send all the hashes in the working row buffer</p></li>
+<li><p>repair_stream_cmd::error
+Notifies an error has happened on the follower</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="get-row-diff">
+<h3>2) get_row_diff()<a class="headerlink" href="#get-row-diff" title="Permalink to this headline">¶</a></h3>
+<p>A new REPAIR_GET_ROW_DIFF_WITH_RPC_STREAM rpc veb is introduced.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">repair_hash_with_cmd</span> <span class="p">{</span>
+    <span class="n">repair_stream_cmd</span> <span class="n">cmd</span><span class="p">;</span>
+    <span class="n">repair_hash</span> <span class="nb">hash</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">struct</span> <span class="n">repair_row_on_wire_with_cmd</span> <span class="p">{</span>
+    <span class="n">repair_stream_cmd</span> <span class="n">cmd</span><span class="p">;</span>
+    <span class="n">repair_row_on_wire</span> <span class="n">row</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="section" id="the-repair-master-sends-repair-hash-with-cmd">
+<h4>The repair master sends: repair_hash_with_cmd<a class="headerlink" href="#the-repair-master-sends-repair-hash-with-cmd" title="Permalink to this headline">¶</a></h4>
+<p>The repair_stream_cmd in repair_hash_with_cmd can be:</p>
+<ul class="simple">
+<li><p>repair_stream_cmd::needs_all_rows
+Asks the repair follower to send all the rows in the working row buffer.</p></li>
+<li><p>repair_stream_cmd::hash_data
+Contains the hash for the row in the working row buffer that repair master
+needs. The hash is stored in repair_hash_with_cmd.hash.</p></li>
+<li><p>repair_stream_cmd::end_of_current_hash_set</p></li>
+</ul>
+<p>Notifies repair follower that repair master has sent all the rows it needs.</p>
+</div>
+<div class="section" id="the-repair-follower-replies-repair-row-on-wire-with-cmd">
+<h4>The repair follower replies: repair_row_on_wire_with_cmd<a class="headerlink" href="#the-repair-follower-replies-repair-row-on-wire-with-cmd" title="Permalink to this headline">¶</a></h4>
+<p>The repair_stream_cmd in repair_row_on_wire_with_cmd can be:</p>
+<ul class="simple">
+<li><p>repair_stream_cmd::row_data
+This is one of the row repair master requested. The row data is stored in
+repair_row_on_wire_with_cmd.row.</p></li>
+<li><p>repair_stream_cmd::end_of_current_rows
+Notifies repair follower has sent all the rows repair master requested.</p></li>
+<li><p>repair_stream_cmd::error
+Notifies an error has happened on the follower.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="put-row-diff">
+<h3>3) put_row_diff()<a class="headerlink" href="#put-row-diff" title="Permalink to this headline">¶</a></h3>
+<p>A new REPAIR_PUT_ROW_DIFF_WITH_RPC_STREAM  rpc veb is introduced.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">repair_row_on_wire_with_cmd</span> <span class="p">{</span>
+    <span class="n">repair_stream_cmd</span> <span class="n">cmd</span><span class="p">;</span>
+    <span class="n">repair_row_on_wire</span> <span class="n">row</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="section" id="the-repair-master-sends-repair-row-on-wire-with-cmd">
+<h4>The repair master sends: repair_row_on_wire_with_cmd<a class="headerlink" href="#the-repair-master-sends-repair-row-on-wire-with-cmd" title="Permalink to this headline">¶</a></h4>
+<p>The repair_stream_cmd in repair_row_on_wire_with_cmd can be:</p>
+<ul class="simple">
+<li><p>repair_stream_cmd::row_data
+Contains one of the rows that repair master wants to send to repair follower.
+The row data is stored in repair_row_on_wire_with_cmd.row.</p></li>
+<li><p>repair_stream_cmd::end_of_current_rows
+Notifies repair follower that repair master has sent all the rows it wants to send.</p></li>
+</ul>
+</div>
+<div class="section" id="the-repair-follower-replies-repair-stream-cmd">
+<h4>The repair follower replies: repair_stream_cmd<a class="headerlink" href="#the-repair-follower-replies-repair-stream-cmd" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>repair_stream_cmd::put_rows_done
+Notifies repair master that repair follower has received and applied all the
+rows repair master sent.</p></li>
+<li><p>repair_stream_cmd::error
+Notifies an error has happened on the follower.</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+  <div class="content-navigation">
+  <div class="navigation navigation--prev">
+    <a class="navigation__link" href="row_cache.html">
+      <button class="navigation__button">
+        <i class="scylla-icon scylla-icon--chevron-left"></i>
+      </button>
+      <div class="navigation__title">
+        <span class="colored">PREVIOUS</span> <br />Row Cache
+      </div>
+    </a>
+  </div>
+  <div class="navigation navigation--next">
+    <a class="navigation__link" href="secondary_index.html">
+      <div class="navigation__title">
+        <span class="colored">NEXT</span> <br />Secondary indexes in Scylla
+      </div>
+      <button class="navigation__button">
+        <i class="scylla-icon scylla-icon--chevron-right"></i>
+      </button>
+    </a>
+  </div>
+</div> 
+      </div>
+      <div
+        class="sidebar-left  large-order-1"
+      > <div id="side-nav" class="side-nav" data-closable data-toggler=".show">
+  <div class="side-nav__search">
+    <div class="search-box">
+      <ci-search></ci-search>
+    </div>
+  </div>
+  <div class="side-nav__versions">
+     <ul
+  class="dropdown menu scylla-dropdown scylla-dropdown--versions "
+  data-dropdown-menu
+>
+  <li class="scylla-dropdown__item">
+    <a class="scylla-dropdown__title" href="#">
+       master 
+      <i class="chevron scylla-icon scylla-icon--chevron-right"></i>
+    </a>
+    <ul class="menu scylla-dropdown__content"> 
+      <li>
+        <a href="../../stable/design-notes/row_level_repair.html"
+          >4.5</a
+        >
+      </li>
+       
+      <li>
+        <a href="../../branch-4.4/design-notes/row_level_repair.html"
+          >4.4</a
+        >
+      </li>
+       
+    </ul>
+  </li>
+</ul> 
+  </div>
+  <div class="side-nav__content">
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Scylla Developer Documentation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../alternator/alternator.html">Alternator: DynamoDB API in Scylla</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="scylla-icon scylla-icon--expand"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../alternator/getting-started.html">Getting Started With ScyllaDB Alternator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alternator/compatibility.html">Scylla Alternator for DynamoDB users</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Design Notes</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="scylla-icon scylla-icon--expand"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="IDL.html">IDL compiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cdc.html">CDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compaction_controller.html">The Compaction Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cql-extensions.html">Scylla CQL extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cql-extensions-internal.html">Scylla CQL extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cql3-type-mapping.html">CQL3 Type Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hinted_handoff_design.html">Hinted Handoff Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="isolation.html">Performance Isolation in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lua-type-mapping.html">CQL to Lua type mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">Scylla Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migrating-from-users-to-roles.html">Migrating from users to roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paged-queries.html">Paged queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="protocol-extensions.html">Protocol extensions to the Cassandra Native Protocol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="protocols.html">Ports and protocols in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="redis.html">Redis API in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repair_based_node_ops.html">Repair based node operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reverse-reads.html">Reverse reads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="row_cache.html">Row Cache</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Row level repair</a></li>
+<li class="toctree-l2"><a class="reference internal" href="secondary_index.html">Secondary indexes in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sstable-scylla-format.html">File format of the Scylla.db sstable component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sstables-directory-structure.html">sstables directory structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="system_keyspace.html">System keyspace layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="system_keyspace.html#virtual-tables-in-the-system-keyspace">Virtual tables in the system keyspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="system_schema_keyspace.html">System schema keyspace layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wasm.html">WASM support for user-defined functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../guides/index.html">Guides</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="scylla-icon scylla-icon--expand"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../guides/HACKING.html">Guidelines for developing Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/api_v2.html">Scylla RESTful API V2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/building.html">Building Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/debugging.html">Debugging with GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/docker-hub.html">Docker Hub Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/logging.html">Logging in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/testing.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/tracing.html">Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/virtual-tables.html">Virtual Tables</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contribute/index.html">Contribute</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="scylla-icon scylla-icon--expand"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/CONTRIBUTING.html">Contributing to Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/backport.html">Backport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/maintainer.html">Maintainer’s handbook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/review-checklist.html">Review Checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../service_levels.html">Service Level Distributed Data</a></li>
+</ul>
+
+  </div>
+</div>
+      </div>
+      
+      <div class="sidebar-right large-order-3">
+         <div class="secondary-side-nav">
+  <div class="secondary-side-nav__content">
+    <p class="topic-title">On this page</p>
+    <ul>
+<li><a class="reference internal" href="#">Row level repair</a><ul>
+<li><a class="reference internal" href="#how-the-the-partition-level-repair-works">How the the partition level repair works</a></li>
+<li><a class="reference internal" href="#major-problems-with-partition-level-repair">Major problems with partition level repair</a></li>
+<li><a class="reference internal" href="#id1">Row level repair</a></li>
+<li><a class="reference internal" href="#how-the-row-level-repair-works">How the row level repair works</a></li>
+<li><a class="reference internal" href="#how-to-implement-repair-with-set-reconciliation">How to implement repair with set reconciliation</a></li>
+<li><a class="reference internal" href="#how-the-rpc-api-looks-like">How the RPC API looks like</a></li>
+<li><a class="reference internal" href="#performance-evaluation">Performance evaluation</a><ul>
+<li><a class="reference internal" href="#synced-one-of-the-node-has-zero-data-the-other-two-nodes-have-1-billion-identical-rows">1) 0% synced: one of the node has zero data. The other two nodes have 1 billion identical rows.</a></li>
+<li><a class="reference internal" href="#synced-all-of-the-3-nodes-have-1-billion-identical-rows">2) 100% synced: all of the 3 nodes have 1 billion identical rows.</a></li>
+<li><a class="reference internal" href="#synced-each-node-has-1-billion-identical-rows-and-1-billion-0-1-distinct-rows">3) 99.9% synced: each node has 1 billion identical rows and 1 billion * 0.1% distinct rows.</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rpc-stream-usage-in-repair">RPC stream usage in repair</a><ul>
+<li><a class="reference internal" href="#get-full-row-hashes">1) get_full_row_hashes()</a><ul>
+<li><a class="reference internal" href="#the-repair-master-sends-repair-stream-cmd">The repair master sends: repair_stream_cmd.</a></li>
+<li><a class="reference internal" href="#the-repair-follower-replies-repair-hash-with-cmd">The repair follower replies: repair_hash_with_cmd.</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#get-row-diff">2) get_row_diff()</a><ul>
+<li><a class="reference internal" href="#the-repair-master-sends-repair-hash-with-cmd">The repair master sends: repair_hash_with_cmd</a></li>
+<li><a class="reference internal" href="#the-repair-follower-replies-repair-row-on-wire-with-cmd">The repair follower replies: repair_row_on_wire_with_cmd</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#put-row-diff">3) put_row_diff()</a><ul>
+<li><a class="reference internal" href="#the-repair-master-sends-repair-row-on-wire-with-cmd">The repair master sends: repair_row_on_wire_with_cmd</a></li>
+<li><a class="reference internal" href="#the-repair-follower-replies-repair-stream-cmd">The repair follower replies: repair_stream_cmd</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</div> 
+      </div>
+    </section>
+
+    <footer class="footer">
+  <div class="footer-group">
+    <div class="footer-top">
+      <a class="footer-logo" href="https://www.scylladb.com"
+        ><img
+          src="../_static/img/logo-scylla-horizontal-RGB.svg"
+          alt="Logo"
+      /></a>
+      <div class="footer-links">
+        <a class="footer-links__link" href="https://docs.scylladb.com/">Docs</a>
+        <a
+          class="footer-links__link"
+          href="https://www.scylladb.com/company/contact-us/"
+          >Contact Us</a
+        >
+        <a class="footer-links__link" href="https://www.scylladb.com/company/"
+          >About Us</a
+        >
+      </div>
+      <div class="footer-actions">
+        <a
+          class="footer-actions__link"
+          href="https://groups.google.com/g/scylladb-users"
+          target="_blank"
+          ><span
+            data-tooltip
+            tabindex="1"
+            title="User mailing list"
+            data-position="bottom"
+          >
+            <img
+              src="../_static/img/icons/icon-mail-list.svg"
+              alt="Mail List Icon"
+            />
+          </span>
+        </a>
+        <a
+          class="footer-actions__link"
+          href="http://slack.scylladb.com/"
+          target="_blank"
+          ><span
+            data-tooltip
+            tabindex="1"
+            title="User Slack channel"
+            data-position="bottom"
+          >
+            <img
+              src="../_static/img/icons/icon-slack.svg"
+              alt="Slack Icon"
+          /></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom__copyright"> &#169; 2021, ScyllaDB. All rights reserved.
+      </div>
+      <div class="footer-bottom__last-updated">
+        Last updated on 05 December 2021.
+      </div>
+      <div class="footer-bottom__version">
+        Powered by
+        <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a> &amp;
+        <a href="https://sphinx-theme.scylladb.com/"
+          >ScyllaDB Theme 1.0.5</a
+        >
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <noscript>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-T8P2JP"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe>
+    </noscript>
+  </body>
+</html>

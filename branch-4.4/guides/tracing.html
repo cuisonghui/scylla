@@ -1,0 +1,828 @@
+
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title> Tracing | Scylla Docs
+    </title>
+    <meta name="description" content="Scylla is an Apache Cassandra-compatible NoSQL data store that can handle 1 million transactions per second on a single server." />
+    <link
+      rel="icon"
+      href="../_static/img/favicon.ico"
+      type="image/x-icon"
+    />
+    <link
+      rel="icon"
+      href="../_static/img/favicon-32x32.png"
+      sizes="32x32"
+    />
+    <link
+      rel="icon"
+      href="../_static/img/favicon-228x228.png"
+      sizes="192x192"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="../_static/img/favicon-228x228.png"
+    />
+    <meta
+      name="msapplication-TileImage"
+      href="../_static/img/favicon-228x228.png"
+    />
+    <link rel="canonical" href="https://docs.scylladb.com/" />
+    <link rel="author" href="mailto:info@scylladb.com" />
+  <!-- connect to domain of font files -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- optionally increase loading priority -->
+  <link
+    rel="preload"
+    as="style"
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+  />
+
+  <!-- async CSS -->
+  <link
+    rel="stylesheet"
+    media="print"
+    onload="this.onload=null;this.removeAttribute('media');"
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+  />
+
+  <!-- no-JS fallback -->
+  <noscript>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+    />
+  </noscript>
+  <link
+    rel="stylesheet"
+    href="../_static/css/main.css"
+    type="text/css"
+  />
+  <link
+    rel="stylesheet"
+    href="../_static/pygments.css"
+    type="text/css"
+  /> <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+
+  <script
+    type="text/javascript"
+    id="documentation_options"
+    data-url_root="../"
+    src="../_static/documentation_options.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="../_static/js/runtime.bundle.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="../_static/js/main.bundle.js"
+  ></script> <script src="../_static/jquery.js"></script> <script src="../_static/underscore.js"></script> <script src="../_static/doctools.js"></script> <script src="../_static/language_data.js"></script> <script src="../_static/clipboard.min.js"></script> <script src="../_static/copybutton.js"></script>
+
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-T8P2JP");
+    </script>
+    <!-- End Google Tag Manager -->
+    <!-- Marketo -->
+    <script type="text/javascript">
+      (function () {
+        var didInit = false;
+        function initMunchkin() {
+          if (didInit === false) {
+            didInit = true;
+            Munchkin.init("791-QBF-350");
+          }
+        }
+        var s = document.createElement("script");
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "//munchkin.marketo.net/munchkin.js";
+        s.onreadystatechange = function () {
+          if (this.readyState == "complete" || this.readyState == "loaded") {
+            initMunchkin();
+          }
+        };
+        s.onload = initMunchkin;
+        document.getElementsByTagName("head")[0].appendChild(s);
+      })();
+    </script>
+    <!-- End Marketo -->
+    <!-- Expertrec -->
+    <script>
+      var id = "e2077224-9ccf-11e9-a0c9-0242ac130002";
+      var ci_search = document.createElement("script");
+      ci_search.type = "text/javascript";
+      ci_search.async = true;
+      ci_search.src = "https://cse.expertrec.com/api/js/ci_common.js?id=" + id;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(ci_search, s);
+    </script>
+    <!-- End Expertrec -->
+
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/b1870adf6a.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- End Font Awesome -->
+  </head>
+  
+  <body>
+     <header class="header">
+  <div class="header-logo">
+    <a class="header-logo__img" href="https://scylladb.com/">
+      <img
+        src="../_static/img/logo-scylla-docs.svg"
+        alt="Scylla Documentation Logo"
+      />
+    </a>
+    <span class="header-logo__bar"></span>
+    <a class="header-logo__text" href="https://docs.scylladb.com/">
+      Documentation
+    </a>
+  </div>
+  <div class="header-navigation">
+    <ul
+      class="dropdown menu scylla-dropdown scylla-dropdown--header"
+      data-dropdown-menu
+    >
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Server <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a href="https://docs.scylladb.com/"
+              ><i class="scylla-icon scylla-icon--about-us"></i>Scylla Open
+              Source</a
+            >
+          </li>
+          <li>
+            <a href="https://docs.scylladb.com/"
+              ><i class="scylla-icon scylla-icon--enterprise"></i>Scylla
+              Enterprise</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://scylla.docs.scylladb.com/master/alternator/alternator.html"
+            >
+              <i class="scylla-icon scylla-icon--overview"></i>Scylla
+              Alternator</a
+            >
+          </li>
+        </ul>
+      </li>
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Cloud <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a href="https://cloud.scylladb.com/">
+              <i class="scylla-icon scylla-icon--cloud"></i>Scylla Cloud</a
+            >
+          </li>
+          <li>
+            <a href="https://docs.scylladb.com/scylla-cloud/">
+              <i class="scylla-icon scylla-icon--cloud-docs"></i>Scylla Cloud
+              Docs</a
+            >
+          </li>
+        </ul>
+      </li>
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Tools <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a href="https://manager.docs.scylladb.com/">
+              <i class="scylla-icon scylla-icon--manager"></i>Scylla Manager</a
+            >
+          </li>
+          <li>
+            <a href="https://monitoring.docs.scylladb.com/">
+              <i class="scylla-icon scylla-icon--monitoring"></i>Scylla
+              Monitoring Stack</a
+            >
+          </li>
+          <li>
+            <a href="https://operator.docs.scylladb.com/">
+              <i class="scylla-icon scylla-icon--operator"></i>Scylla Operator
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Drivers <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a
+              href="https://docs.scylladb.com/using-scylla/drivers/cql-drivers/"
+            >
+              <i class="scylla-icon scylla-icon--nsql-guides"></i>CQL Drivers
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://docs.scylladb.com/using-scylla/drivers/dynamo-drivers/"
+            >
+              <i class="scylla-icon scylla-icon--overview"></i>DynamoDB Drivers
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <div class="header-button">
+      <a href="https://www.scylladb.com/download/" class="button">Download</a>
+    </div>
+  </div>
+  <div class="header-search-box">
+    <div class="search-box">
+      <ci-search></ci-search>
+    </div>
+  </div>
+  <div class="side-nav-toggle" data-toggle="side-nav">
+  <div class="side-nav-toggle__button">
+    <img src="../_static/img/menu.svg" alt="Menu" />
+  </div>
+</div>
+</header>
+    <section class="layout ">
+      <div class="content large-order-2">
+         
+
+        <div class="admonition caution">
+          <p class="admonition-title">Caution</p>
+          <p>
+             You
+            are not reading the most current version of the documentation.  If you want up-to-date information, please have a look at
+
+            <a href="../../stable/guides/tracing.html">
+               4.5  </a
+            >.
+          </p>
+        </div>
+        
+
+        <div class="pre-content">
+          <div class="pre-content__left"><div class="breadcrumbs">
+  <span class="bread__item">
+    <a
+      href="https://scylla.docs.scylladb.com"
+      class="bread__highlight"
+    >
+      <i class="fas fa-home"></i> Scylla Documentation</a
+    ></span
+  >
+  
+  <span class="bread__item"
+    ><a href="index.html">Guides</a></span
+  >
+  
+  <span class="bread__item bread__item--last">Tracing</span>
+</div></div>
+          <div class="pre-content__right"><ul
+  class="dropdown menu scylla-dropdown scylla-dropdown--contribute"
+  data-dropdown-menu
+>
+  <li class="scylla-dropdown__item">
+    <a class="scylla-dropdown__title" href="#">
+      <div class="scylla-dropdown__title--body">
+        <i class="icon fa fa-github" aria-hidden="true"></i>
+        Contribute
+      </div>
+      <i class="chevron scylla-icon scylla-icon--chevron-right"></i>
+    </a>
+    <ul class="menu scylla-dropdown__content">
+      <li>
+        <a
+          href="https://github.com/scylladb/scylla/issues/new?title=Issue in page Tracing&&body=I%20would%20like%20to%20report%20an%20issue%20in%20page%20https://scylla.docs.scylladb.com/branch-4.4/guides/tracing%0A%0A%23%23%23%20Problem%0A%0A%23%23%23%20%20Suggest%20a%20fix"
+          target="_blank"
+          >Report a doc issue
+          <i class="icon fa fa-external-link" aria-hidden="true"></i
+        ></a>
+      </li>
+      
+      <li>
+             
+        <a
+          href="https://github.com/scylladb/scylla/edit/branch-4.4/docs/guides/tracing.md"
+          target="_blank"
+          >Edit this page
+          <i class="icon fa fa-external-link" aria-hidden="true"></i
+        ></a>
+      </li>
+      
+      <li>
+        <a href="https://docs.scylladb.com/contribute/" target="_blank"
+          >Learn how to contribute
+          <i class="icon fa fa-external-link" aria-hidden="true"></i
+        ></a>
+      </li>
+    </ul>
+  </li>
+</ul></div>
+        </div>
+         <div class="section" id="tracing">
+<h1>Tracing<a class="headerlink" href="#tracing" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="motivation">
+<h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">¶</a></h2>
+<p>Tracing is a ScyllaDB tool that is meant to help debugging and analysing the internal flows in the server. One example of such a flow is a CQL request processing.</p>
+</div>
+<div class="section" id="how-to-enable">
+<h2>How to enable?<a class="headerlink" href="#how-to-enable" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="cqlsh">
+<h3>cqlsh<a class="headerlink" href="#cqlsh" title="Permalink to this headline">¶</a></h3>
+<p>Users of a <code class="docutils literal notranslate"><span class="pre">cqlsh</span></code> may enable Tracing with <code class="docutils literal notranslate"><span class="pre">TRACING</span> <span class="pre">ON|OFF</span></code> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cqlsh</span><span class="o">&gt;</span> <span class="n">TRACING</span> <span class="n">ON</span>
+<span class="n">Now</span> <span class="n">Tracing</span> <span class="ow">is</span> <span class="n">enabled</span>
+<span class="n">cqlsh</span><span class="o">&gt;</span> <span class="n">INSERT</span> <span class="n">into</span> <span class="n">keyspace1</span><span class="o">.</span><span class="n">standard1</span>  <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;C0&quot;</span><span class="p">)</span> <span class="n">VALUES</span> <span class="p">(</span><span class="mh">0x12345679</span><span class="p">,</span> <span class="n">bigintAsBlob</span><span class="p">(</span><span class="mi">123456</span><span class="p">));</span>
+
+<span class="n">Tracing</span> <span class="n">session</span><span class="p">:</span> <span class="mi">227</span><span class="n">aff60</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span>
+
+ <span class="n">activity</span>                                                                                         <span class="o">|</span> <span class="n">timestamp</span>                  <span class="o">|</span> <span class="n">source</span>    <span class="o">|</span> <span class="n">source_elapsed</span>
+<span class="o">--------------------------------------------------------------------------------------------------+----------------------------+-----------+----------------</span>
+                                                                               <span class="n">Execute</span> <span class="n">CQL3</span> <span class="n">query</span> <span class="o">|</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">21</span> <span class="mi">11</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mf">21.238000</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span>              <span class="mi">0</span>
+                                                                    <span class="n">Parsing</span> <span class="n">a</span> <span class="n">statement</span> <span class="p">[</span><span class="n">shard</span> <span class="mi">1</span><span class="p">]</span> <span class="o">|</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">21</span> <span class="mi">11</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mf">21.238335</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span>              <span class="mi">1</span>
+                                                                 <span class="n">Processing</span> <span class="n">a</span> <span class="n">statement</span> <span class="p">[</span><span class="n">shard</span> <span class="mi">1</span><span class="p">]</span> <span class="o">|</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">21</span> <span class="mi">11</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mf">21.238405</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span>             <span class="mi">71</span>
+ <span class="n">Creating</span> <span class="n">write</span> <span class="n">handler</span> <span class="k">for</span> <span class="n">token</span><span class="p">:</span> <span class="mi">2309717968349690594</span> <span class="n">natural</span><span class="p">:</span> <span class="p">{</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">}</span> <span class="n">pending</span><span class="p">:</span> <span class="p">{}</span> <span class="p">[</span><span class="n">shard</span> <span class="mi">1</span><span class="p">]</span> <span class="o">|</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">21</span> <span class="mi">11</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mf">21.238433</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span>             <span class="mi">99</span>
+                                 <span class="n">Creating</span> <span class="n">write</span> <span class="n">handler</span> <span class="k">with</span> <span class="n">live</span><span class="p">:</span> <span class="p">{</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">}</span> <span class="n">dead</span><span class="p">:</span> <span class="p">{}</span> <span class="p">[</span><span class="n">shard</span> <span class="mi">1</span><span class="p">]</span> <span class="o">|</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">21</span> <span class="mi">11</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mf">21.238439</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span>            <span class="mi">105</span>
+                                                       <span class="n">Sending</span> <span class="n">a</span> <span class="n">mutation</span> <span class="n">to</span> <span class="o">/</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="p">[</span><span class="n">shard</span> <span class="mi">1</span><span class="p">]</span> <span class="o">|</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">21</span> <span class="mi">11</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mf">21.238490</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span>            <span class="mi">156</span>
+                                                       <span class="n">Message</span> <span class="n">received</span> <span class="kn">from</span> <span class="o">/</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="p">[</span><span class="n">shard</span> <span class="mi">0</span><span class="p">]</span> <span class="o">|</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">21</span> <span class="mi">11</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mf">21.238562</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="o">|</span>             <span class="mi">17</span>
+                                                    <span class="n">Sending</span> <span class="n">mutation_done</span> <span class="n">to</span> <span class="o">/</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="p">[</span><span class="n">shard</span> <span class="mi">0</span><span class="p">]</span> <span class="o">|</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">21</span> <span class="mi">11</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mf">21.238658</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="o">|</span>            <span class="mi">113</span>
+                                                              <span class="n">Mutation</span> <span class="n">handling</span> <span class="ow">is</span> <span class="n">done</span> <span class="p">[</span><span class="n">shard</span> <span class="mi">0</span><span class="p">]</span> <span class="o">|</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">21</span> <span class="mi">11</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mf">21.238675</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="o">|</span>            <span class="mi">130</span>
+                                                         <span class="n">Got</span> <span class="n">a</span> <span class="n">response</span> <span class="kn">from</span> <span class="o">/</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="p">[</span><span class="n">shard</span> <span class="mi">1</span><span class="p">]</span> <span class="o">|</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">21</span> <span class="mi">11</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mf">21.238950</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span>            <span class="mi">616</span>
+                                                        <span class="n">Mutation</span> <span class="n">successfully</span> <span class="n">completed</span> <span class="p">[</span><span class="n">shard</span> <span class="mi">1</span><span class="p">]</span> <span class="o">|</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">21</span> <span class="mi">11</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mf">21.238958</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span>            <span class="mi">624</span>
+                                                   <span class="n">Done</span> <span class="n">processing</span> <span class="o">-</span> <span class="n">preparing</span> <span class="n">a</span> <span class="n">result</span> <span class="p">[</span><span class="n">shard</span> <span class="mi">1</span><span class="p">]</span> <span class="o">|</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">21</span> <span class="mi">11</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mf">21.238962</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span>            <span class="mi">628</span>
+                                                                                 <span class="n">Request</span> <span class="n">complete</span> <span class="o">|</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">21</span> <span class="mi">11</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mf">21.238639</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span>            <span class="mi">639</span>
+</pre></div>
+</div>
+<p><strong>Note</strong> how <code class="docutils literal notranslate"><span class="pre">source_elapsed</span></code> starts over on <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code> when execution gets there.</p>
+<p>The raw tracing data looks as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cqlsh</span><span class="o">&gt;</span> <span class="n">select</span> <span class="o">*</span> <span class="kn">from</span> <span class="nn">system_traces.sessions</span>  <span class="n">where</span> <span class="n">session_id</span><span class="o">=</span><span class="mi">227</span><span class="n">aff60</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span><span class="p">;</span>
+
+ <span class="n">session_id</span>                           <span class="o">|</span> <span class="n">client</span>    <span class="o">|</span> <span class="n">command</span> <span class="o">|</span> <span class="n">coordinator</span> <span class="o">|</span> <span class="n">duration</span> <span class="o">|</span> <span class="n">parameters</span>                                                                                                                                                                                                                       <span class="o">|</span> <span class="n">request</span>            <span class="o">|</span> <span class="n">started_at</span>
+<span class="o">--------------------------------------+-----------+---------+-------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+---------------------------------</span>
+ <span class="mi">227</span><span class="n">aff60</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="o">|</span>   <span class="n">QUERY</span> <span class="o">|</span>   <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span>      <span class="mi">639</span> <span class="o">|</span> <span class="p">{</span><span class="s1">&#39;consistency_level&#39;</span><span class="p">:</span> <span class="s1">&#39;ONE&#39;</span><span class="p">,</span> <span class="s1">&#39;page_size&#39;</span><span class="p">:</span> <span class="s1">&#39;100&#39;</span><span class="p">,</span> <span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="s1">&#39;INSERT into keyspace1.standard1  (key, &quot;C0&quot;) VALUES (0x12345679, bigintAsBlob(123456));&#39;</span><span class="p">,</span> <span class="s1">&#39;serial_consistency_level&#39;</span><span class="p">:</span> <span class="s1">&#39;SERIAL&#39;</span><span class="p">,</span> <span class="s1">&#39;user_timestamp&#39;</span><span class="p">:</span> <span class="s1">&#39;1469091441238107&#39;</span><span class="p">}</span> <span class="o">|</span> <span class="n">Execute</span> <span class="n">CQL3</span> <span class="n">query</span> <span class="o">|</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">21</span> <span class="mi">08</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mf">21.238000</span><span class="o">+</span><span class="mi">0000</span>
+
+<span class="p">(</span><span class="mi">1</span> <span class="n">rows</span><span class="p">)</span>
+<span class="n">cqlsh</span><span class="o">&gt;</span> <span class="n">select</span> <span class="o">*</span> <span class="kn">from</span> <span class="nn">system_traces.events</span>  <span class="n">where</span> <span class="n">session_id</span><span class="o">=</span><span class="mi">227</span><span class="n">aff60</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span><span class="p">;</span>
+
+ <span class="n">session_id</span>                           <span class="o">|</span> <span class="n">event_id</span>                             <span class="o">|</span> <span class="n">activity</span>                                                                               <span class="o">|</span> <span class="n">source</span>    <span class="o">|</span> <span class="n">source_elapsed</span> <span class="o">|</span> <span class="n">thread</span>
+<span class="o">--------------------------------------+--------------------------------------+----------------------------------------------------------------------------------------+-----------+----------------+--------</span>
+ <span class="mi">227</span><span class="n">aff60</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span> <span class="mi">227</span><span class="n">b0c74</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span>                                                                    <span class="n">Parsing</span> <span class="n">a</span> <span class="n">statement</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span>              <span class="mi">1</span> <span class="o">|</span> <span class="n">shard</span> <span class="mi">1</span>
+ <span class="mi">227</span><span class="n">aff60</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span> <span class="mi">227</span><span class="n">b0f34</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span>                                                                 <span class="n">Processing</span> <span class="n">a</span> <span class="n">statement</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span>             <span class="mi">71</span> <span class="o">|</span> <span class="n">shard</span> <span class="mi">1</span>
+ <span class="mi">227</span><span class="n">aff60</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span> <span class="mi">227</span><span class="n">b1047</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span> <span class="n">Creating</span> <span class="n">write</span> <span class="n">handler</span> <span class="k">for</span> <span class="n">token</span><span class="p">:</span> <span class="mi">2309717968349690594</span> <span class="n">natural</span><span class="p">:</span> <span class="p">{</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">}</span> <span class="n">pending</span><span class="p">:</span> <span class="p">{}</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span>             <span class="mi">99</span> <span class="o">|</span> <span class="n">shard</span> <span class="mi">1</span>
+ <span class="mi">227</span><span class="n">aff60</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span> <span class="mi">227</span><span class="n">b1087</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span>                                 <span class="n">Creating</span> <span class="n">write</span> <span class="n">handler</span> <span class="k">with</span> <span class="n">live</span><span class="p">:</span> <span class="p">{</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">}</span> <span class="n">dead</span><span class="p">:</span> <span class="p">{}</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span>            <span class="mi">105</span> <span class="o">|</span> <span class="n">shard</span> <span class="mi">1</span>
+ <span class="mi">227</span><span class="n">aff60</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span> <span class="mi">227</span><span class="n">b1284</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span>                                                       <span class="n">Sending</span> <span class="n">a</span> <span class="n">mutation</span> <span class="n">to</span> <span class="o">/</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span>            <span class="mi">156</span> <span class="o">|</span> <span class="n">shard</span> <span class="mi">1</span>
+ <span class="mi">227</span><span class="n">aff60</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span> <span class="mi">227</span><span class="n">b1559</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="n">bf08</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span>                                                       <span class="n">Message</span> <span class="n">received</span> <span class="kn">from</span> <span class="o">/</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="o">|</span>             <span class="mi">17</span> <span class="o">|</span> <span class="n">shard</span> <span class="mi">0</span>
+ <span class="mi">227</span><span class="n">aff60</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span> <span class="mi">227</span><span class="n">b1915</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="n">bf08</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span>                                                    <span class="n">Sending</span> <span class="n">mutation_done</span> <span class="n">to</span> <span class="o">/</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="o">|</span>            <span class="mi">113</span> <span class="o">|</span> <span class="n">shard</span> <span class="mi">0</span>
+ <span class="mi">227</span><span class="n">aff60</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span> <span class="mi">227</span><span class="n">b19bd</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="n">bf08</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span>                                                              <span class="n">Mutation</span> <span class="n">handling</span> <span class="ow">is</span> <span class="n">done</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="o">|</span>            <span class="mi">130</span> <span class="o">|</span> <span class="n">shard</span> <span class="mi">0</span>
+ <span class="mi">227</span><span class="n">aff60</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span> <span class="mi">227</span><span class="n">b247e</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span>                                                         <span class="n">Got</span> <span class="n">a</span> <span class="n">response</span> <span class="kn">from</span> <span class="o">/</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span>            <span class="mi">616</span> <span class="o">|</span> <span class="n">shard</span> <span class="mi">1</span>
+ <span class="mi">227</span><span class="n">aff60</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span> <span class="mi">227</span><span class="n">b24ca</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span>                                                        <span class="n">Mutation</span> <span class="n">successfully</span> <span class="n">completed</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span>            <span class="mi">624</span> <span class="o">|</span> <span class="n">shard</span> <span class="mi">1</span>
+ <span class="mi">227</span><span class="n">aff60</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span> <span class="mi">227</span><span class="n">b24f2</span><span class="o">-</span><span class="mi">4</span><span class="n">f21</span><span class="o">-</span><span class="mf">11e6</span><span class="o">-</span><span class="mi">8835</span><span class="o">-</span><span class="mi">000000000000</span> <span class="o">|</span>                                                   <span class="n">Done</span> <span class="n">processing</span> <span class="o">-</span> <span class="n">preparing</span> <span class="n">a</span> <span class="n">result</span> <span class="o">|</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.2</span> <span class="o">|</span>            <span class="mi">628</span> <span class="o">|</span> <span class="n">shard</span> <span class="mi">1</span>
+
+<span class="p">(</span><span class="mi">11</span> <span class="n">rows</span><span class="p">)</span>
+<span class="n">cqlsh</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="probabilistic-tracing">
+<h3>Probabilistic tracing<a class="headerlink" href="#probabilistic-tracing" title="Permalink to this headline">¶</a></h3>
+<p>Tracing implies a significant performance penalty on a cluster when it’s enabled. Therefore if we want to enable tracing for some on going workload we don’t want to enable it for every request but rather for some (small) portion of them. This may be achieved using the so called <code class="docutils literal notranslate"><span class="pre">probabilistic</span> <span class="pre">tracing</span></code>, which would randomly choose a request to be traced with some defined probability.</p>
+<p>For instance, if we want to trace 0.01% or all queries in the cluster we shell set a <code class="docutils literal notranslate"><span class="pre">probabilistic</span> <span class="pre">tracing</span></code> with the probability 0.0001:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ nodetool settraceprobability 0.0001
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="how-traces-are-stored">
+<h2>How traces are stored?<a class="headerlink" href="#how-traces-are-stored" title="Permalink to this headline">¶</a></h2>
+<p>Traces are stored in a <code class="docutils literal notranslate"><span class="pre">system_traces</span></code> keyspace for 24 hours, which consists of 2 tables with replication factor of 2:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">system_traces</span><span class="o">.</span><span class="n">events</span> <span class="p">(</span>
+    <span class="n">session_id</span> <span class="n">uuid</span><span class="p">,</span>
+    <span class="n">event_id</span> <span class="n">timeuuid</span><span class="p">,</span>
+    <span class="n">activity</span> <span class="n">text</span><span class="p">,</span>
+    <span class="n">source</span> <span class="n">inet</span><span class="p">,</span>
+    <span class="n">source_elapsed</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">thread</span> <span class="n">text</span><span class="p">,</span>
+    <span class="n">PRIMARY</span> <span class="n">KEY</span> <span class="p">(</span><span class="n">session_id</span><span class="p">,</span> <span class="n">event_id</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">system_traces</span><span class="o">.</span><span class="n">sessions</span> <span class="p">(</span>
+    <span class="n">session_id</span> <span class="n">uuid</span> <span class="n">PRIMARY</span> <span class="n">KEY</span><span class="p">,</span>
+    <span class="n">client</span> <span class="n">inet</span><span class="p">,</span>
+    <span class="n">command</span> <span class="n">text</span><span class="p">,</span>
+    <span class="n">coordinator</span> <span class="n">inet</span><span class="p">,</span>
+    <span class="n">duration</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">parameters</span> <span class="nb">map</span><span class="o">&lt;</span><span class="n">text</span><span class="p">,</span> <span class="n">text</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="n">request</span> <span class="n">text</span><span class="p">,</span>
+    <span class="n">started_at</span> <span class="n">timestamp</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Traces are created in a context of a <code class="docutils literal notranslate"><span class="pre">tracing</span> <span class="pre">session</span></code>. For instance, if we trace an <code class="docutils literal notranslate"><span class="pre">INSERT</span></code> CQL command, a tracing session with a unique ID (<code class="docutils literal notranslate"><span class="pre">session_id</span></code> column in the tables above) will be created and all trace points hit during the execution will be stored in a context of this session. And this defines the format in which tracing data is stored:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sessions</span></code> table contains a single row for each tracing session</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">events</span></code> table contains a single row for each trace point.</p></li>
+</ul>
+<p>If we need trace points for a specific session we may query <code class="docutils literal notranslate"><span class="pre">events</span></code> table for this session’s ID (see examples above).</p>
+<p>Note that there is no guaranteed way to know when the tracing of a particular session has completed and <code class="docutils literal notranslate"><span class="pre">events</span></code> now contains the full trace of this request. In particular, the appearance of the session’s id in the <code class="docutils literal notranslate"><span class="pre">sessions</span></code> table does <em>not</em> indicate that the tracing of this session int <code class="docutils literal notranslate"><span class="pre">events</span></code> has completed. This session record is written by the coordinator of the request when it considers the “foreground” part of the request to be done (and the <code class="docutils literal notranslate"><span class="pre">duration</span></code> field measures the time the request spent in foreground mode), but replicas may continue to write to the <code class="docutils literal notranslate"><span class="pre">events</span></code> table about their work for this request. Moreover, even on a single-node setup the writes to <code class="docutils literal notranslate"><span class="pre">sessions</span></code> and <code class="docutils literal notranslate"><span class="pre">events</span></code> happen asynchronously, so the user cannot rely on their relative ordering.</p>
+<div class="section" id="events-columns-descripton">
+<h3><code class="docutils literal notranslate"><span class="pre">events</span></code> columns descripton<a class="headerlink" href="#events-columns-descripton" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">events</span></code> columns are quite straight forward:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">session_id</span></code>: ID of a session this trace</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">event_id</span></code>: ID of this specific trace entry</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">activity</span></code>: a trace message</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">source</span></code>: address of a Node where the trace entry has been created</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">source_elapsed</span></code>: a number of microseconds passed since the beginning of the tracing session on a specific Node (see examples above)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code>: currently this contains a number of a shard on which this trace point has been taken</p></li>
+</ul>
+</div>
+<div class="section" id="sessions-columns-description">
+<h3><code class="docutils literal notranslate"><span class="pre">sessions</span></code> columns description<a class="headerlink" href="#sessions-columns-description" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">session_id</span></code>: ID of this tracing session</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">command</span></code>: currently this may only have a “QUERY” value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">client</span></code>: address of a Client that has sent this query</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">coordinator</span></code>: address of a coordinator that received this query from a Client</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">duration</span></code>: the total duration of this tracing session</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">parameters</span></code>: this map contains string pairs that describe the query which may include:</p>
+<ul>
+<li><p>query string</p></li>
+<li><p>consistency level</p></li>
+<li><p>etc.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">request</span></code>: a short string describing the current query, like “Execute CQL3 query”</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">started_at</span></code>: is a timestamp taken when tracing session has began</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="slow-queries-logging">
+<h2>Slow queries logging<a class="headerlink" href="#slow-queries-logging" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="the-motivation">
+<h3>The motivation<a class="headerlink" href="#the-motivation" title="Permalink to this headline">¶</a></h3>
+<p>Many times in real life installations one of the most important parameters of the system is the longest response time. Naturally, the shorter it is - the better. Therefore capturing the request that take a long time and understanding why it took it so long is a very critical and challenging task.</p>
+</div>
+<div class="section" id="the-solution">
+<h3>The solution<a class="headerlink" href="#the-solution" title="Permalink to this headline">¶</a></h3>
+<p>The “slow query logging” is a ScyllaDB feature that is going to greatly ease the debugging related to the long requests.
+When enabled it would record the queries with the handling time above the specified threshold. As a result there will be created a new record in a <code class="docutils literal notranslate"><span class="pre">system_traces.node_slow_log</span></code> table. All tracing records created in a context of this query on a Coordinator Node will be written as well. In addition, if handling on some replica takes too long, its traces are going to be stored too.</p>
+<p>Thereby, when we detect a slow query we are going to get a valuable tracing data that would greatly help us to understand what was the query and why it took so long to complete.</p>
+</div>
+<div class="section" id="how-to-enable-and-configure">
+<h3>How to enable and configure<a class="headerlink" href="#how-to-enable-and-configure" title="Permalink to this headline">¶</a></h3>
+<p>By default slow query logging is disabled.
+There is a REST API that allows configuring and querying the current configuration of this feature.
+To set the parameters run:
+<code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">POST</span> <span class="pre">--header</span> <span class="pre">&quot;Content-Type:</span> <span class="pre">application/json&quot;</span> <span class="pre">--header</span> <span class="pre">&quot;Accept:</span> <span class="pre">application/json&quot;</span> <span class="pre">&quot;http://&lt;Node's</span> <span class="pre">address&gt;:10000/storage_service/slow_query?enable=&lt;true|false&gt;&amp;ttl=&lt;in</span> <span class="pre">seconds&gt;&amp;threshold=&lt;threshold</span> <span class="pre">in</span> <span class="pre">microseconds&gt;&quot;</span></code></p>
+<p>e.g. in order to disable the feature on a Node with an address <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code>, set the <code class="docutils literal notranslate"><span class="pre">ttl</span></code> to 8600s and a threshold to 10000us:</p>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">POST</span> <span class="pre">--header</span> <span class="pre">&quot;Content-Type:</span> <span class="pre">application/json&quot;</span> <span class="pre">--header</span> <span class="pre">&quot;Accept:</span> <span class="pre">application/json&quot;</span> <span class="pre">&quot;http://127.0.0.1:10000/storage_service/slow_query?enable=false&amp;ttl=8600&amp;threshold=10000&quot;</span></code></p>
+<p>To get the current configuration run:
+<code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">--header</span> <span class="pre">&quot;Content-Type:</span> <span class="pre">application/json&quot;</span> <span class="pre">--header</span> <span class="pre">&quot;Accept:</span> <span class="pre">application/json&quot;</span> <span class="pre">&quot;http://&lt;Node's</span> <span class="pre">address&gt;:10000/storage_service/slow_query&quot;</span></code></p>
+<p>e.g. after the POST command above the query result will look as below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ curl -X GET --header &quot;Content-Type: application/json&quot; --header &quot;Accept: application/json&quot; &quot;http://127.0.0.1:10000/storage_service/slow_query&quot;
+{&quot;threshold&quot;: 10000, &quot;enable&quot;: false, &quot;ttl&quot;: 8600}
+$
+</pre></div>
+</div>
+</div>
+<div class="section" id="node-slow-log-table">
+<h3>node_slow_log table<a class="headerlink" href="#node-slow-log-table" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="schema">
+<h4>Schema<a class="headerlink" href="#schema" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">system_traces</span><span class="o">.</span><span class="n">node_slow_log</span> <span class="p">(</span>
+    <span class="n">start_time</span> <span class="n">timeuuid</span><span class="p">,</span>
+    <span class="n">node_ip</span> <span class="n">inet</span><span class="p">,</span>
+    <span class="n">shard</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">command</span> <span class="n">text</span><span class="p">,</span>
+    <span class="n">date</span> <span class="n">timestamp</span><span class="p">,</span>
+    <span class="n">duration</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">parameters</span> <span class="nb">map</span><span class="o">&lt;</span><span class="n">text</span><span class="p">,</span> <span class="n">text</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="n">session_id</span> <span class="n">uuid</span><span class="p">,</span>
+    <span class="n">source_ip</span> <span class="n">inet</span><span class="p">,</span>
+    <span class="n">table_names</span> <span class="nb">set</span><span class="o">&lt;</span><span class="n">text</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="n">username</span> <span class="n">text</span><span class="p">,</span>
+    <span class="n">PRIMARY</span> <span class="n">KEY</span> <span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="n">node_ip</span><span class="p">,</span> <span class="n">shard</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="columns-description">
+<h4>Columns description<a class="headerlink" href="#columns-description" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">start_time</span></code> and <code class="docutils literal notranslate"><span class="pre">date</span></code>: time when the query has began</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">node_ip</span></code>: Address of a Coordinator Node</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">shard</span></code>: shard ID on a Coordinator, where the query has been handled</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">command</span></code>: the query command, e.g. <code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">*</span> <span class="pre">from</span> <span class="pre">my_ks.my_cf</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">duration</span></code>: the duration of a query handling in microseconds</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">parameters</span></code>: query parameters like a <code class="docutils literal notranslate"><span class="pre">parameters</span></code> column in a system_traces.sessions table</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">session_id</span></code>: the corresponding Tracing session ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">source_ip</span></code>: Address of a Client that sent this query</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">table_names</span></code>: a list of tables used for this query, where applicable</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">username</span></code>: a user name used for authentication with this query</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="how-to-get-query-traces">
+<h2>How to get query traces?<a class="headerlink" href="#how-to-get-query-traces" title="Permalink to this headline">¶</a></h2>
+<p>Each query tracing session gets a unique ID - <code class="docutils literal notranslate"><span class="pre">session_id</span></code>, which serves as a partition key for <code class="docutils literal notranslate"><span class="pre">system_traces.sessions</span></code> and <code class="docutils literal notranslate"><span class="pre">system_traces.events</span></code> tables.</p>
+<p>Once one has this key the rest is trivial: <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">*</span> <span class="pre">FROM</span> <span class="pre">system_traces.events</span> <span class="pre">WHERE</span> <span class="pre">session_id=&lt;value&gt;</span></code>.</p>
+<p>If we invoke tracing from the <code class="docutils literal notranslate"><span class="pre">cqlsh</span></code> using a <code class="docutils literal notranslate"><span class="pre">TRACING</span> <span class="pre">ON</span></code> command the <code class="docutils literal notranslate"><span class="pre">session_id</span></code> is printed with traces themselves and one can easily grab it
+and get the same traces later if needed using the query above.</p>
+<p>If tracing was enabled using probabilistic tracing or with slow query log features (both described above) then one should use
+time based index tables: <code class="docutils literal notranslate"><span class="pre">system_traces.sessions_time_idx</span></code> and <code class="docutils literal notranslate"><span class="pre">system_traces.node_slow_log_time_idx</span></code>.</p>
+<p>These indexes allow getting <code class="docutils literal notranslate"><span class="pre">session_id</span></code>s of all tracing sessions that were recorded in a specific time period.</p>
+<p>For instance, to get <code class="docutils literal notranslate"><span class="pre">session_id</span></code>s of all tracing sessions that started between <code class="docutils literal notranslate"><span class="pre">2016-09-07</span> <span class="pre">16:56:30-0000</span></code> and <code class="docutils literal notranslate"><span class="pre">2016-09-07</span> <span class="pre">16:58:00-0000</span></code> one may run the following query:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">session_id</span> <span class="kn">from</span> <span class="nn">system_traces.sessions_time_idx</span> <span class="n">where</span> <span class="n">minutes</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;2016-09-07 16:56:00-0000&#39;</span><span class="p">,</span><span class="s1">&#39;2016-09-07 16:57:00-0000&#39;</span><span class="p">,</span><span class="s1">&#39;2016-09-07 16:58:00-0000&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">started_at</span> <span class="o">&gt;</span> <span class="s1">&#39;2016-09-07 16:56:30-0000&#39;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">system_traces.node_slow_log_time_idx</span></code> contains entries that correspond to queries traced only in the context of slow query logging.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">system_traces.sessions_time_idx</span></code> contains entries for all traced queries.</p></li>
+</ul>
+<div class="section" id="index-tables-schemas-are-as-follows">
+<h3>Index tables’ schemas are as follows:<a class="headerlink" href="#index-tables-schemas-are-as-follows" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">system_traces</span><span class="o">.</span><span class="n">sessions_time_idx</span> <span class="p">(</span>
+    <span class="n">minute</span> <span class="n">timestamp</span><span class="p">,</span>
+    <span class="n">started_at</span> <span class="n">timestamp</span><span class="p">,</span>
+    <span class="n">session_id</span> <span class="n">uuid</span><span class="p">,</span>
+    <span class="n">PRIMARY</span> <span class="n">KEY</span> <span class="p">(</span><span class="n">minute</span><span class="p">,</span> <span class="n">started_at</span><span class="p">,</span> <span class="n">session_id</span><span class="p">))</span>
+
+<span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">system_traces</span><span class="o">.</span><span class="n">node_slow_log_time_idx</span> <span class="p">(</span>
+    <span class="n">minute</span> <span class="n">timestamp</span><span class="p">,</span>
+    <span class="n">started_at</span> <span class="n">timestamp</span><span class="p">,</span>
+    <span class="n">session_id</span> <span class="n">uuid</span><span class="p">,</span>
+    <span class="n">start_time</span> <span class="n">timeuuid</span><span class="p">,</span>
+    <span class="n">node_ip</span> <span class="n">inet</span><span class="p">,</span>
+    <span class="n">shard</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">PRIMARY</span> <span class="n">KEY</span> <span class="p">(</span><span class="n">minute</span><span class="p">,</span> <span class="n">started_at</span><span class="p">,</span> <span class="n">session_id</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>As you may notice each <code class="docutils literal notranslate"><span class="pre">system_traces.node_slow_log_time_idx</span></code> record contains <code class="docutils literal notranslate"><span class="pre">system_traces.sessions</span></code>, <code class="docutils literal notranslate"><span class="pre">system_traces.events</span></code> and <code class="docutils literal notranslate"><span class="pre">system_traces.node_slow_log</span></code> keys allowing to get the corresponding entries from each of these tables.</p>
+</div>
+</div>
+</div>
+  <div class="content-navigation">
+  <div class="navigation navigation--prev">
+    <a class="navigation__link" href="testing.html">
+      <button class="navigation__button">
+        <i class="scylla-icon scylla-icon--chevron-left"></i>
+      </button>
+      <div class="navigation__title">
+        <span class="colored">PREVIOUS</span> <br />Testing
+      </div>
+    </a>
+  </div>
+  <div class="navigation navigation--next">
+    <a class="navigation__link" href="../contribute/index.html">
+      <div class="navigation__title">
+        <span class="colored">NEXT</span> <br />Contribute
+      </div>
+      <button class="navigation__button">
+        <i class="scylla-icon scylla-icon--chevron-right"></i>
+      </button>
+    </a>
+  </div>
+</div> 
+      </div>
+      <div
+        class="sidebar-left  large-order-1"
+      > <div id="side-nav" class="side-nav" data-closable data-toggler=".show">
+  <div class="side-nav__search">
+    <div class="search-box">
+      <ci-search></ci-search>
+    </div>
+  </div>
+  <div class="side-nav__versions">
+     <ul
+  class="dropdown menu scylla-dropdown scylla-dropdown--versions "
+  data-dropdown-menu
+>
+  <li class="scylla-dropdown__item">
+    <a class="scylla-dropdown__title" href="#">
+       4.4 
+      <i class="chevron scylla-icon scylla-icon--chevron-right"></i>
+    </a>
+    <ul class="menu scylla-dropdown__content"> 
+      <li>
+        <a href="../../stable/guides/tracing.html"
+          >4.5</a
+        >
+      </li>
+       
+      <li>
+        <a href="tracing.html"
+          >4.4</a
+        >
+      </li>
+       
+    </ul>
+  </li>
+</ul> 
+  </div>
+  <div class="side-nav__content">
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Scylla Developer Documentation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../alternator/alternator.html">Alternator: DynamoDB API in Scylla</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="scylla-icon scylla-icon--expand"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../alternator/getting-started.html">Getting Started With ScyllaDB Alternator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alternator/compatibility.html">Scylla Alternator for DynamoDB users</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../design-notes/index.html">Design Notes</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="scylla-icon scylla-icon--expand"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/IDL.html">IDL definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/cdc.html">CDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/compaction_controller.html">The Compaction Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/cql-extensions.html">Scylla CQL extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/cql3-type-mapping.html">CQL3 Type Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/hinted_handoff_design.html">Hinted Handoff Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/in_memory_representation.html">In-Memory Representation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/isolation.html">Performance Isolation in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/lua-type-mapping.html">CQL to Lua type mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/metrics.html">Scylla Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/migrating-from-users-to-roles.html">Migrating from users to roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/paged-queries.html">Paged queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/protocol-extensions.html">Protocol extensions to the Cassandra Native Protocol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/protocols.html">Ports and protocols in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/redis.html">Redis API in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/repair_based_node_ops.html">Repair based node operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/row_cache.html">Row Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/row_level_repair.html">Row level repair</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/secondary_index.html">Secondary indexes in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/sstable-scylla-format.html">File format of the Scylla.db sstable component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/sstables-directory-structure.html">sstables directory structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/system_keyspace.html">System keyspace layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/system_schema_keyspace.html">System schema keyspace layout</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Guides</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="scylla-icon scylla-icon--expand"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="HACKING.html">Guidelines for developing Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_v2.html">Scylla RESTful API V2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="building.html">Building Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html">Debugging with GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker-hub.html">Docker Hub Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html">Logging in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Tracing</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contribute/index.html">Contribute</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="scylla-icon scylla-icon--expand"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/backport.html">Backport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/coding-style.html">Scylla Coding Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/maintainer.html">Maintainer’s handbook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/review-checklist.html">Review Checklist</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</div>
+      </div>
+      
+      <div class="sidebar-right large-order-3">
+         <div class="secondary-side-nav">
+  <div class="secondary-side-nav__content">
+    <p class="topic-title">On this page</p>
+    <ul>
+<li><a class="reference internal" href="#">Tracing</a><ul>
+<li><a class="reference internal" href="#motivation">Motivation</a></li>
+<li><a class="reference internal" href="#how-to-enable">How to enable?</a><ul>
+<li><a class="reference internal" href="#cqlsh">cqlsh</a></li>
+<li><a class="reference internal" href="#probabilistic-tracing">Probabilistic tracing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#how-traces-are-stored">How traces are stored?</a><ul>
+<li><a class="reference internal" href="#events-columns-descripton"><code class="docutils literal notranslate"><span class="pre">events</span></code> columns descripton</a></li>
+<li><a class="reference internal" href="#sessions-columns-description"><code class="docutils literal notranslate"><span class="pre">sessions</span></code> columns description</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#slow-queries-logging">Slow queries logging</a><ul>
+<li><a class="reference internal" href="#the-motivation">The motivation</a></li>
+<li><a class="reference internal" href="#the-solution">The solution</a></li>
+<li><a class="reference internal" href="#how-to-enable-and-configure">How to enable and configure</a></li>
+<li><a class="reference internal" href="#node-slow-log-table">node_slow_log table</a><ul>
+<li><a class="reference internal" href="#schema">Schema</a></li>
+<li><a class="reference internal" href="#columns-description">Columns description</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#how-to-get-query-traces">How to get query traces?</a><ul>
+<li><a class="reference internal" href="#index-tables-schemas-are-as-follows">Index tables’ schemas are as follows:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</div> 
+      </div>
+    </section>
+
+    <footer class="footer">
+  <div class="footer-group">
+    <div class="footer-top">
+      <a class="footer-logo" href="https://www.scylladb.com"
+        ><img
+          src="../_static/img/logo-scylla-horizontal-RGB.svg"
+          alt="Logo"
+      /></a>
+      <div class="footer-links">
+        <a class="footer-links__link" href="https://docs.scylladb.com/">Docs</a>
+        <a
+          class="footer-links__link"
+          href="https://www.scylladb.com/company/contact-us/"
+          >Contact Us</a
+        >
+        <a class="footer-links__link" href="https://www.scylladb.com/company/"
+          >About Us</a
+        >
+      </div>
+      <div class="footer-actions">
+        <a
+          class="footer-actions__link"
+          href="https://groups.google.com/g/scylladb-users"
+          target="_blank"
+          ><span
+            data-tooltip
+            tabindex="1"
+            title="User mailing list"
+            data-position="bottom"
+          >
+            <img
+              src="../_static/img/icons/icon-mail-list.svg"
+              alt="Mail List Icon"
+            />
+          </span>
+        </a>
+        <a
+          class="footer-actions__link"
+          href="http://slack.scylladb.com/"
+          target="_blank"
+          ><span
+            data-tooltip
+            tabindex="1"
+            title="User Slack channel"
+            data-position="bottom"
+          >
+            <img
+              src="../_static/img/icons/icon-slack.svg"
+              alt="Slack Icon"
+          /></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom__copyright"> &#169; 2021, ScyllaDB. All rights reserved.
+      </div>
+      <div class="footer-bottom__last-updated">
+        Last updated on 05 December 2021.
+      </div>
+      <div class="footer-bottom__version">
+        Powered by
+        <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a> &amp;
+        <a href="https://sphinx-theme.scylladb.com/"
+          >ScyllaDB Theme 1.0.5</a
+        >
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <noscript>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-T8P2JP"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe>
+    </noscript>
+  </body>
+</html>

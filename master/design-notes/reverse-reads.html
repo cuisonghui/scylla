@@ -1,0 +1,699 @@
+
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title> Reverse reads | Scylla Docs
+    </title>
+    <meta name="description" content="Scylla is an Apache Cassandra-compatible NoSQL data store that can handle 1 million transactions per second on a single server." />
+    <link
+      rel="icon"
+      href="../_static/img/favicon.ico"
+      type="image/x-icon"
+    />
+    <link
+      rel="icon"
+      href="../_static/img/favicon-32x32.png"
+      sizes="32x32"
+    />
+    <link
+      rel="icon"
+      href="../_static/img/favicon-228x228.png"
+      sizes="192x192"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="../_static/img/favicon-228x228.png"
+    />
+    <meta
+      name="msapplication-TileImage"
+      href="../_static/img/favicon-228x228.png"
+    />
+    <link rel="canonical" href="https://docs.scylladb.com/" />
+    <link rel="author" href="mailto:info@scylladb.com" />
+  <!-- connect to domain of font files -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- optionally increase loading priority -->
+  <link
+    rel="preload"
+    as="style"
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+  />
+
+  <!-- async CSS -->
+  <link
+    rel="stylesheet"
+    media="print"
+    onload="this.onload=null;this.removeAttribute('media');"
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+  />
+
+  <!-- no-JS fallback -->
+  <noscript>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+    />
+  </noscript>
+  <link
+    rel="stylesheet"
+    href="../_static/css/main.css"
+    type="text/css"
+  />
+  <link
+    rel="stylesheet"
+    href="../_static/pygments.css"
+    type="text/css"
+  /> <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+
+  <script
+    type="text/javascript"
+    id="documentation_options"
+    data-url_root="../"
+    src="../_static/documentation_options.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="../_static/js/runtime.bundle.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="../_static/js/main.bundle.js"
+  ></script> <script src="../_static/jquery.js"></script> <script src="../_static/underscore.js"></script> <script src="../_static/doctools.js"></script> <script src="../_static/language_data.js"></script> <script src="../_static/clipboard.min.js"></script> <script src="../_static/copybutton.js"></script>
+
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-T8P2JP");
+    </script>
+    <!-- End Google Tag Manager -->
+    <!-- Marketo -->
+    <script type="text/javascript">
+      (function () {
+        var didInit = false;
+        function initMunchkin() {
+          if (didInit === false) {
+            didInit = true;
+            Munchkin.init("791-QBF-350");
+          }
+        }
+        var s = document.createElement("script");
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "//munchkin.marketo.net/munchkin.js";
+        s.onreadystatechange = function () {
+          if (this.readyState == "complete" || this.readyState == "loaded") {
+            initMunchkin();
+          }
+        };
+        s.onload = initMunchkin;
+        document.getElementsByTagName("head")[0].appendChild(s);
+      })();
+    </script>
+    <!-- End Marketo -->
+    <!-- Expertrec -->
+    <script>
+      var id = "e2077224-9ccf-11e9-a0c9-0242ac130002";
+      var ci_search = document.createElement("script");
+      ci_search.type = "text/javascript";
+      ci_search.async = true;
+      ci_search.src = "https://cse.expertrec.com/api/js/ci_common.js?id=" + id;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(ci_search, s);
+    </script>
+    <!-- End Expertrec -->
+
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/b1870adf6a.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- End Font Awesome -->
+  </head>
+  
+  <body>
+     <header class="header">
+  <div class="header-logo">
+    <a class="header-logo__img" href="https://scylladb.com/">
+      <img
+        src="../_static/img/logo-scylla-docs.svg"
+        alt="Scylla Documentation Logo"
+      />
+    </a>
+    <span class="header-logo__bar"></span>
+    <a class="header-logo__text" href="https://docs.scylladb.com/">
+      Documentation
+    </a>
+  </div>
+  <div class="header-navigation">
+    <ul
+      class="dropdown menu scylla-dropdown scylla-dropdown--header"
+      data-dropdown-menu
+    >
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Server <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a href="https://docs.scylladb.com/"
+              ><i class="scylla-icon scylla-icon--about-us"></i>Scylla Open
+              Source</a
+            >
+          </li>
+          <li>
+            <a href="https://docs.scylladb.com/"
+              ><i class="scylla-icon scylla-icon--enterprise"></i>Scylla
+              Enterprise</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://scylla.docs.scylladb.com/master/alternator/alternator.html"
+            >
+              <i class="scylla-icon scylla-icon--overview"></i>Scylla
+              Alternator</a
+            >
+          </li>
+        </ul>
+      </li>
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Cloud <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a href="https://cloud.scylladb.com/">
+              <i class="scylla-icon scylla-icon--cloud"></i>Scylla Cloud</a
+            >
+          </li>
+          <li>
+            <a href="https://docs.scylladb.com/scylla-cloud/">
+              <i class="scylla-icon scylla-icon--cloud-docs"></i>Scylla Cloud
+              Docs</a
+            >
+          </li>
+        </ul>
+      </li>
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Tools <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a href="https://manager.docs.scylladb.com/">
+              <i class="scylla-icon scylla-icon--manager"></i>Scylla Manager</a
+            >
+          </li>
+          <li>
+            <a href="https://monitoring.docs.scylladb.com/">
+              <i class="scylla-icon scylla-icon--monitoring"></i>Scylla
+              Monitoring Stack</a
+            >
+          </li>
+          <li>
+            <a href="https://operator.docs.scylladb.com/">
+              <i class="scylla-icon scylla-icon--operator"></i>Scylla Operator
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Drivers <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a
+              href="https://docs.scylladb.com/using-scylla/drivers/cql-drivers/"
+            >
+              <i class="scylla-icon scylla-icon--nsql-guides"></i>CQL Drivers
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://docs.scylladb.com/using-scylla/drivers/dynamo-drivers/"
+            >
+              <i class="scylla-icon scylla-icon--overview"></i>DynamoDB Drivers
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <div class="header-button">
+      <a href="https://www.scylladb.com/download/" class="button">Download</a>
+    </div>
+  </div>
+  <div class="header-search-box">
+    <div class="search-box">
+      <ci-search></ci-search>
+    </div>
+  </div>
+  <div class="side-nav-toggle" data-toggle="side-nav">
+  <div class="side-nav-toggle__button">
+    <img src="../_static/img/menu.svg" alt="Menu" />
+  </div>
+</div>
+</header>
+    <section class="layout ">
+      <div class="content large-order-2">
+         
+
+        <div class="admonition caution">
+          <p class="admonition-title">Caution</p>
+          <p>
+             You are
+            reading an unstable version of this documentation.  If you want up-to-date information, please have a look at
+
+            <a href="../../stable/index.html">
+               4.5  </a
+            >.
+          </p>
+        </div>
+        
+
+        <div class="pre-content">
+          <div class="pre-content__left"><div class="breadcrumbs">
+  <span class="bread__item">
+    <a
+      href="https://scylla.docs.scylladb.com"
+      class="bread__highlight"
+    >
+      <i class="fas fa-home"></i> Scylla Documentation</a
+    ></span
+  >
+  
+  <span class="bread__item"
+    ><a href="index.html">Design Notes</a></span
+  >
+  
+  <span class="bread__item bread__item--last">Reverse reads</span>
+</div></div>
+          <div class="pre-content__right"><ul
+  class="dropdown menu scylla-dropdown scylla-dropdown--contribute"
+  data-dropdown-menu
+>
+  <li class="scylla-dropdown__item">
+    <a class="scylla-dropdown__title" href="#">
+      <div class="scylla-dropdown__title--body">
+        <i class="icon fa fa-github" aria-hidden="true"></i>
+        Contribute
+      </div>
+      <i class="chevron scylla-icon scylla-icon--chevron-right"></i>
+    </a>
+    <ul class="menu scylla-dropdown__content">
+      <li>
+        <a
+          href="https://github.com/scylladb/scylla/issues/new?title=Issue in page Reverse reads&&body=I%20would%20like%20to%20report%20an%20issue%20in%20page%20https://scylla.docs.scylladb.com/master/design-notes/reverse-reads%0A%0A%23%23%23%20Problem%0A%0A%23%23%23%20%20Suggest%20a%20fix"
+          target="_blank"
+          >Report a doc issue
+          <i class="icon fa fa-external-link" aria-hidden="true"></i
+        ></a>
+      </li>
+      
+      <li>
+             
+        <a
+          href="https://github.com/scylladb/scylla/edit/master/docs/design-notes/reverse-reads.md"
+          target="_blank"
+          >Edit this page
+          <i class="icon fa fa-external-link" aria-hidden="true"></i
+        ></a>
+      </li>
+      
+      <li>
+        <a href="https://docs.scylladb.com/contribute/" target="_blank"
+          >Learn how to contribute
+          <i class="icon fa fa-external-link" aria-hidden="true"></i
+        ></a>
+      </li>
+    </ul>
+  </li>
+</ul></div>
+        </div>
+         <div class="section" id="reverse-reads">
+<h1>Reverse reads<a class="headerlink" href="#reverse-reads" title="Permalink to this headline">¶</a></h1>
+<p>A read is called reverse when it reads with reverse clustering order
+(compared to that of the schema). Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">mytable</span> <span class="p">(</span>
+    <span class="n">pk</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">ck</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">s</span> <span class="nb">int</span> <span class="n">STATIC</span><span class="p">,</span>
+    <span class="n">v</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">PRIMARY</span> <span class="n">KEY</span> <span class="p">(</span><span class="n">pk</span><span class="p">,</span> <span class="n">ck</span><span class="p">)</span>
+<span class="p">)</span> <span class="n">WITH</span>
+    <span class="n">CLUSTERING</span> <span class="n">ORDER</span> <span class="n">BY</span> <span class="p">(</span><span class="n">ck</span> <span class="n">ASC</span><span class="p">);</span>
+
+<span class="c1"># Forward read (using table&#39;s native order)</span>
+<span class="n">SELECT</span> <span class="o">*</span> <span class="n">FROM</span> <span class="n">mytable</span> <span class="n">WHERE</span> <span class="n">pk</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="c1"># Explicit forward order</span>
+<span class="n">SELECT</span> <span class="o">*</span> <span class="n">FROM</span> <span class="n">mytable</span> <span class="n">WHERE</span> <span class="n">pk</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">ck</span> <span class="n">ASC</span><span class="p">;</span>
+
+<span class="c1"># Reverse read</span>
+<span class="n">SELECT</span> <span class="o">*</span> <span class="n">FROM</span> <span class="n">mytable</span> <span class="n">WHERE</span> <span class="n">pk</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">ck</span> <span class="n">DESC</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>If the table’s native clustering order is DESC, then a read with ASC
+order is considered reverse.</p>
+<div class="section" id="legacy-format">
+<h2>Legacy format<a class="headerlink" href="#legacy-format" title="Permalink to this headline">¶</a></h2>
+<p>The legacy format is how scylla handled reverse queries internally. We
+are in the process of migrating to the native reverse format, but for
+now coordinator-side code still uses the legacy format.</p>
+<div class="section" id="request">
+<h3>Request<a class="headerlink" href="#request" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">query::partition_slice::options::reversed</span></code> flag is set.
+Clustering ranges in both <code class="docutils literal notranslate"><span class="pre">query::partition_slice::_row_ranges</span></code> and
+<code class="docutils literal notranslate"><span class="pre">query::specific_ranges::_ranges</span></code>
+(<code class="docutils literal notranslate"><span class="pre">query::partition_slice::_specific_ranges</span></code>) are half-reversed: they
+are ordered in reverse, but when they are compared to other
+mutation-fragments, their end bound is used as position, instead of the
+start bound as usual. When compared to other clustering ranges the end
+bound is used as the start bound and vice-versa.
+Example:</p>
+<p>For the clustering keys (ASC order): <code class="docutils literal notranslate"><span class="pre">ck1</span></code>, <code class="docutils literal notranslate"><span class="pre">ck2</span></code>, <code class="docutils literal notranslate"><span class="pre">ck3</span></code>, <code class="docutils literal notranslate"><span class="pre">ck4</span></code>, <code class="docutils literal notranslate"><span class="pre">ck5</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ck6</span></code>.
+A <code class="docutils literal notranslate"><span class="pre">_row_ranges</span></code> field of a slice might contain this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">ck1</span><span class="p">,</span> <span class="n">ck2</span><span class="p">],</span> <span class="p">[</span><span class="n">ck4</span><span class="p">,</span> <span class="n">ck5</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The legacy reversed version would look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">ck4</span><span class="p">,</span> <span class="n">ck5</span><span class="p">],</span> <span class="p">[</span><span class="n">ck1</span><span class="p">,</span> <span class="n">ck2</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Note how the ranges themselves are the same (bounds not reversed), it is
+just the range vector itself that is reversed.</p>
+</div>
+<div class="section" id="result">
+<h3>Result<a class="headerlink" href="#result" title="Permalink to this headline">¶</a></h3>
+<p>Results are ordered with the reversed clustering order with the caveat
+that range-tombstones are ordered by their end bound, using the native
+schema’s comparators. For example given the following partition:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ps</span><span class="p">{</span><span class="n">pk1</span><span class="p">},</span> <span class="n">sr</span><span class="p">{},</span> <span class="n">cr</span><span class="p">{</span><span class="n">ck1</span><span class="p">},</span> <span class="n">rt</span><span class="p">{[</span><span class="n">ck2</span><span class="p">,</span> <span class="n">ck4</span><span class="p">)},</span> <span class="n">cr</span><span class="p">{</span><span class="n">ck2</span><span class="p">},</span> <span class="n">cr</span><span class="p">{</span><span class="n">ck3</span><span class="p">},</span> <span class="n">cr</span><span class="p">{</span><span class="n">ck4</span><span class="p">},</span> <span class="n">ck</span><span class="p">{</span><span class="n">ck5</span><span class="p">},</span> <span class="n">pe</span><span class="p">{}</span>
+</pre></div>
+</div>
+<p>The legacy reverse format equivalent of this looks like the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ps</span><span class="p">{</span><span class="n">pk1</span><span class="p">},</span> <span class="n">sr</span><span class="p">{},</span> <span class="n">cr</span><span class="p">{</span><span class="n">ck5</span><span class="p">},</span> <span class="n">rt</span><span class="p">{[</span><span class="n">ck2</span><span class="p">,</span> <span class="n">ck4</span><span class="p">)},</span> <span class="n">cr</span><span class="p">{</span><span class="n">ck4</span><span class="p">},</span> <span class="n">cr</span><span class="p">{</span><span class="n">ck3</span><span class="p">},</span> <span class="n">cr</span><span class="p">{</span><span class="n">ck2</span><span class="p">},</span> <span class="n">ck</span><span class="p">{</span><span class="n">ck1</span><span class="p">},</span> <span class="n">pe</span><span class="p">{}</span>
+</pre></div>
+</div>
+<p>Note:</p>
+<ul class="simple">
+<li><p>Only clustering elements change;</p></li>
+<li><p>Range tombstone’s bounds are not reversed;</p></li>
+<li><p>Range tombstones can be ordered off-by-one due to native schema
+comparators used: <code class="docutils literal notranslate"><span class="pre">rt{[ck2,</span> <span class="pre">ck4)}</span></code> should be ordered <em>after</em>
+<code class="docutils literal notranslate"><span class="pre">cr{ck4}</span></code>.</p></li>
+</ul>
+<p>Legend:</p>
+<ul class="simple">
+<li><p>ps = partitions-tart</p></li>
+<li><p>sr = static-row</p></li>
+<li><p>cr = clustering-row</p></li>
+<li><p>rt = range-tombstone</p></li>
+<li><p>pe = partition-end</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="native-format">
+<h2>Native format<a class="headerlink" href="#native-format" title="Permalink to this headline">¶</a></h2>
+<p>The native format uses ordering equivalent to that of a table with
+reverse clustering format. Using <code class="docutils literal notranslate"><span class="pre">mytable</span></code> as an example, the native
+reverse format would be an identical table <code class="docutils literal notranslate"><span class="pre">my_reverse_table</span></code>, which
+uses <code class="docutils literal notranslate"><span class="pre">CLUSTERING</span> <span class="pre">ORDER</span> <span class="pre">BY</span> <span class="pre">(ck</span> <span class="pre">DESC);</span></code>. This allows middle layers in a
+read pipeline to just use a schema with reversed clustering order and
+process the reverse stream as normal.</p>
+<div class="section" id="id1">
+<h3>Request<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">query::partition_slice::options::reversed</span></code> flag is set as in the
+legacy format. Clustering ranges in both
+<code class="docutils literal notranslate"><span class="pre">query::partition_slice::_row_ranges</span></code> and
+<code class="docutils literal notranslate"><span class="pre">query::specific_ranges::_ranges</span></code>
+(<code class="docutils literal notranslate"><span class="pre">query::partition_slice::_specific_ranges</span></code>) are fully-reversed: they
+are ordered in reverse, their bound being swapped as well.
+Example:</p>
+<p>For the clustering keys (ASC order): <code class="docutils literal notranslate"><span class="pre">ck1</span></code>, <code class="docutils literal notranslate"><span class="pre">ck2</span></code>, <code class="docutils literal notranslate"><span class="pre">ck3</span></code>, <code class="docutils literal notranslate"><span class="pre">ck4</span></code>, <code class="docutils literal notranslate"><span class="pre">ck5</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ck6</span></code>.
+A <code class="docutils literal notranslate"><span class="pre">_row_ranges</span></code> field of a slice might contain this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">ck1</span><span class="p">,</span> <span class="n">ck2</span><span class="p">],</span> <span class="p">[</span><span class="n">ck4</span><span class="p">,</span> <span class="n">ck5</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The native reversed version would look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">ck5</span><span class="p">,</span> <span class="n">ck4</span><span class="p">],</span> <span class="p">[</span><span class="n">ck2</span><span class="p">,</span> <span class="n">ck1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>In addition to this, the schema is reversed on the replica, at the start
+of the read, so all the reverse-capable and intermediate readers in the
+stack get a reversed schema to work with.</p>
+</div>
+<div class="section" id="id2">
+<h3>Result<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Results are ordered with the reversed clustering order with
+the bounds of range-tombstones swapped. For example, given the same
+partition that was used in the legacy format example, the native reverse
+version would look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ps</span><span class="p">{</span><span class="n">pk1</span><span class="p">},</span> <span class="n">sr</span><span class="p">{},</span> <span class="n">cr</span><span class="p">{</span><span class="n">ck5</span><span class="p">},</span> <span class="n">cr</span><span class="p">{</span><span class="n">ck4</span><span class="p">},</span> <span class="n">rt</span><span class="p">{(</span><span class="n">ck4</span><span class="p">,</span> <span class="n">ck2</span><span class="p">]},</span> <span class="n">cr</span><span class="p">{</span><span class="n">ck3</span><span class="p">},</span> <span class="n">cr</span><span class="p">{</span><span class="n">ck2</span><span class="p">},</span> <span class="n">ck</span><span class="p">{</span><span class="n">ck1</span><span class="p">},</span> <span class="n">pe</span><span class="p">{}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+  <div class="content-navigation">
+  <div class="navigation navigation--prev">
+    <a class="navigation__link" href="repair_based_node_ops.html">
+      <button class="navigation__button">
+        <i class="scylla-icon scylla-icon--chevron-left"></i>
+      </button>
+      <div class="navigation__title">
+        <span class="colored">PREVIOUS</span> <br />Repair based node operations
+      </div>
+    </a>
+  </div>
+  <div class="navigation navigation--next">
+    <a class="navigation__link" href="row_cache.html">
+      <div class="navigation__title">
+        <span class="colored">NEXT</span> <br />Row Cache
+      </div>
+      <button class="navigation__button">
+        <i class="scylla-icon scylla-icon--chevron-right"></i>
+      </button>
+    </a>
+  </div>
+</div> 
+      </div>
+      <div
+        class="sidebar-left  large-order-1"
+      > <div id="side-nav" class="side-nav" data-closable data-toggler=".show">
+  <div class="side-nav__search">
+    <div class="search-box">
+      <ci-search></ci-search>
+    </div>
+  </div>
+  <div class="side-nav__versions">
+     <ul
+  class="dropdown menu scylla-dropdown scylla-dropdown--versions "
+  data-dropdown-menu
+>
+  <li class="scylla-dropdown__item">
+    <a class="scylla-dropdown__title" href="#">
+       master 
+      <i class="chevron scylla-icon scylla-icon--chevron-right"></i>
+    </a>
+    <ul class="menu scylla-dropdown__content"> 
+      <li>
+        <a href="../../stable/index.html"
+          >4.5</a
+        >
+      </li>
+       
+      <li>
+        <a href="../../branch-4.4/index.html"
+          >4.4</a
+        >
+      </li>
+       
+    </ul>
+  </li>
+</ul> 
+  </div>
+  <div class="side-nav__content">
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Scylla Developer Documentation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../alternator/alternator.html">Alternator: DynamoDB API in Scylla</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="scylla-icon scylla-icon--expand"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../alternator/getting-started.html">Getting Started With ScyllaDB Alternator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alternator/compatibility.html">Scylla Alternator for DynamoDB users</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Design Notes</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="scylla-icon scylla-icon--expand"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="IDL.html">IDL compiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cdc.html">CDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compaction_controller.html">The Compaction Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cql-extensions.html">Scylla CQL extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cql-extensions-internal.html">Scylla CQL extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cql3-type-mapping.html">CQL3 Type Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hinted_handoff_design.html">Hinted Handoff Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="isolation.html">Performance Isolation in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lua-type-mapping.html">CQL to Lua type mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">Scylla Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migrating-from-users-to-roles.html">Migrating from users to roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paged-queries.html">Paged queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="protocol-extensions.html">Protocol extensions to the Cassandra Native Protocol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="protocols.html">Ports and protocols in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="redis.html">Redis API in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repair_based_node_ops.html">Repair based node operations</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Reverse reads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="row_cache.html">Row Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="row_level_repair.html">Row level repair</a></li>
+<li class="toctree-l2"><a class="reference internal" href="secondary_index.html">Secondary indexes in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sstable-scylla-format.html">File format of the Scylla.db sstable component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sstables-directory-structure.html">sstables directory structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="system_keyspace.html">System keyspace layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="system_keyspace.html#virtual-tables-in-the-system-keyspace">Virtual tables in the system keyspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="system_schema_keyspace.html">System schema keyspace layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wasm.html">WASM support for user-defined functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../guides/index.html">Guides</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="scylla-icon scylla-icon--expand"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../guides/HACKING.html">Guidelines for developing Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/api_v2.html">Scylla RESTful API V2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/building.html">Building Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/debugging.html">Debugging with GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/docker-hub.html">Docker Hub Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/logging.html">Logging in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/testing.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/tracing.html">Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/virtual-tables.html">Virtual Tables</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contribute/index.html">Contribute</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="scylla-icon scylla-icon--expand"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/CONTRIBUTING.html">Contributing to Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/backport.html">Backport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/maintainer.html">Maintainer’s handbook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/review-checklist.html">Review Checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../service_levels.html">Service Level Distributed Data</a></li>
+</ul>
+
+  </div>
+</div>
+      </div>
+      
+      <div class="sidebar-right large-order-3">
+         <div class="secondary-side-nav">
+  <div class="secondary-side-nav__content">
+    <p class="topic-title">On this page</p>
+    <ul>
+<li><a class="reference internal" href="#">Reverse reads</a><ul>
+<li><a class="reference internal" href="#legacy-format">Legacy format</a><ul>
+<li><a class="reference internal" href="#request">Request</a></li>
+<li><a class="reference internal" href="#result">Result</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#native-format">Native format</a><ul>
+<li><a class="reference internal" href="#id1">Request</a></li>
+<li><a class="reference internal" href="#id2">Result</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</div> 
+      </div>
+    </section>
+
+    <footer class="footer">
+  <div class="footer-group">
+    <div class="footer-top">
+      <a class="footer-logo" href="https://www.scylladb.com"
+        ><img
+          src="../_static/img/logo-scylla-horizontal-RGB.svg"
+          alt="Logo"
+      /></a>
+      <div class="footer-links">
+        <a class="footer-links__link" href="https://docs.scylladb.com/">Docs</a>
+        <a
+          class="footer-links__link"
+          href="https://www.scylladb.com/company/contact-us/"
+          >Contact Us</a
+        >
+        <a class="footer-links__link" href="https://www.scylladb.com/company/"
+          >About Us</a
+        >
+      </div>
+      <div class="footer-actions">
+        <a
+          class="footer-actions__link"
+          href="https://groups.google.com/g/scylladb-users"
+          target="_blank"
+          ><span
+            data-tooltip
+            tabindex="1"
+            title="User mailing list"
+            data-position="bottom"
+          >
+            <img
+              src="../_static/img/icons/icon-mail-list.svg"
+              alt="Mail List Icon"
+            />
+          </span>
+        </a>
+        <a
+          class="footer-actions__link"
+          href="http://slack.scylladb.com/"
+          target="_blank"
+          ><span
+            data-tooltip
+            tabindex="1"
+            title="User Slack channel"
+            data-position="bottom"
+          >
+            <img
+              src="../_static/img/icons/icon-slack.svg"
+              alt="Slack Icon"
+          /></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom__copyright"> &#169; 2021, ScyllaDB. All rights reserved.
+      </div>
+      <div class="footer-bottom__last-updated">
+        Last updated on 05 December 2021.
+      </div>
+      <div class="footer-bottom__version">
+        Powered by
+        <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a> &amp;
+        <a href="https://sphinx-theme.scylladb.com/"
+          >ScyllaDB Theme 1.0.5</a
+        >
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <noscript>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-T8P2JP"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe>
+    </noscript>
+  </body>
+</html>

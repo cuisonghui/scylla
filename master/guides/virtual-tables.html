@@ -1,0 +1,671 @@
+
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title> Virtual Tables | Scylla Docs
+    </title>
+    <meta name="description" content="Scylla is an Apache Cassandra-compatible NoSQL data store that can handle 1 million transactions per second on a single server." />
+    <link
+      rel="icon"
+      href="../_static/img/favicon.ico"
+      type="image/x-icon"
+    />
+    <link
+      rel="icon"
+      href="../_static/img/favicon-32x32.png"
+      sizes="32x32"
+    />
+    <link
+      rel="icon"
+      href="../_static/img/favicon-228x228.png"
+      sizes="192x192"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="../_static/img/favicon-228x228.png"
+    />
+    <meta
+      name="msapplication-TileImage"
+      href="../_static/img/favicon-228x228.png"
+    />
+    <link rel="canonical" href="https://docs.scylladb.com/" />
+    <link rel="author" href="mailto:info@scylladb.com" />
+  <!-- connect to domain of font files -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- optionally increase loading priority -->
+  <link
+    rel="preload"
+    as="style"
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+  />
+
+  <!-- async CSS -->
+  <link
+    rel="stylesheet"
+    media="print"
+    onload="this.onload=null;this.removeAttribute('media');"
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+  />
+
+  <!-- no-JS fallback -->
+  <noscript>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+    />
+  </noscript>
+  <link
+    rel="stylesheet"
+    href="../_static/css/main.css"
+    type="text/css"
+  />
+  <link
+    rel="stylesheet"
+    href="../_static/pygments.css"
+    type="text/css"
+  /> <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+
+  <script
+    type="text/javascript"
+    id="documentation_options"
+    data-url_root="../"
+    src="../_static/documentation_options.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="../_static/js/runtime.bundle.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="../_static/js/main.bundle.js"
+  ></script> <script src="../_static/jquery.js"></script> <script src="../_static/underscore.js"></script> <script src="../_static/doctools.js"></script> <script src="../_static/language_data.js"></script> <script src="../_static/clipboard.min.js"></script> <script src="../_static/copybutton.js"></script>
+
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-T8P2JP");
+    </script>
+    <!-- End Google Tag Manager -->
+    <!-- Marketo -->
+    <script type="text/javascript">
+      (function () {
+        var didInit = false;
+        function initMunchkin() {
+          if (didInit === false) {
+            didInit = true;
+            Munchkin.init("791-QBF-350");
+          }
+        }
+        var s = document.createElement("script");
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "//munchkin.marketo.net/munchkin.js";
+        s.onreadystatechange = function () {
+          if (this.readyState == "complete" || this.readyState == "loaded") {
+            initMunchkin();
+          }
+        };
+        s.onload = initMunchkin;
+        document.getElementsByTagName("head")[0].appendChild(s);
+      })();
+    </script>
+    <!-- End Marketo -->
+    <!-- Expertrec -->
+    <script>
+      var id = "e2077224-9ccf-11e9-a0c9-0242ac130002";
+      var ci_search = document.createElement("script");
+      ci_search.type = "text/javascript";
+      ci_search.async = true;
+      ci_search.src = "https://cse.expertrec.com/api/js/ci_common.js?id=" + id;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(ci_search, s);
+    </script>
+    <!-- End Expertrec -->
+
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/b1870adf6a.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- End Font Awesome -->
+  </head>
+  
+  <body>
+     <header class="header">
+  <div class="header-logo">
+    <a class="header-logo__img" href="https://scylladb.com/">
+      <img
+        src="../_static/img/logo-scylla-docs.svg"
+        alt="Scylla Documentation Logo"
+      />
+    </a>
+    <span class="header-logo__bar"></span>
+    <a class="header-logo__text" href="https://docs.scylladb.com/">
+      Documentation
+    </a>
+  </div>
+  <div class="header-navigation">
+    <ul
+      class="dropdown menu scylla-dropdown scylla-dropdown--header"
+      data-dropdown-menu
+    >
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Server <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a href="https://docs.scylladb.com/"
+              ><i class="scylla-icon scylla-icon--about-us"></i>Scylla Open
+              Source</a
+            >
+          </li>
+          <li>
+            <a href="https://docs.scylladb.com/"
+              ><i class="scylla-icon scylla-icon--enterprise"></i>Scylla
+              Enterprise</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://scylla.docs.scylladb.com/master/alternator/alternator.html"
+            >
+              <i class="scylla-icon scylla-icon--overview"></i>Scylla
+              Alternator</a
+            >
+          </li>
+        </ul>
+      </li>
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Cloud <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a href="https://cloud.scylladb.com/">
+              <i class="scylla-icon scylla-icon--cloud"></i>Scylla Cloud</a
+            >
+          </li>
+          <li>
+            <a href="https://docs.scylladb.com/scylla-cloud/">
+              <i class="scylla-icon scylla-icon--cloud-docs"></i>Scylla Cloud
+              Docs</a
+            >
+          </li>
+        </ul>
+      </li>
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Tools <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a href="https://manager.docs.scylladb.com/">
+              <i class="scylla-icon scylla-icon--manager"></i>Scylla Manager</a
+            >
+          </li>
+          <li>
+            <a href="https://monitoring.docs.scylladb.com/">
+              <i class="scylla-icon scylla-icon--monitoring"></i>Scylla
+              Monitoring Stack</a
+            >
+          </li>
+          <li>
+            <a href="https://operator.docs.scylladb.com/">
+              <i class="scylla-icon scylla-icon--operator"></i>Scylla Operator
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="scylla-dropdown__item">
+        <a href="#" class="scylla-dropdown__title"
+          >Drivers <i class="chevron scylla-icon scylla-icon--triangle-down"></i
+        ></a>
+        <ul class="menu scylla-dropdown__content">
+          <li>
+            <a
+              href="https://docs.scylladb.com/using-scylla/drivers/cql-drivers/"
+            >
+              <i class="scylla-icon scylla-icon--nsql-guides"></i>CQL Drivers
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://docs.scylladb.com/using-scylla/drivers/dynamo-drivers/"
+            >
+              <i class="scylla-icon scylla-icon--overview"></i>DynamoDB Drivers
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <div class="header-button">
+      <a href="https://www.scylladb.com/download/" class="button">Download</a>
+    </div>
+  </div>
+  <div class="header-search-box">
+    <div class="search-box">
+      <ci-search></ci-search>
+    </div>
+  </div>
+  <div class="side-nav-toggle" data-toggle="side-nav">
+  <div class="side-nav-toggle__button">
+    <img src="../_static/img/menu.svg" alt="Menu" />
+  </div>
+</div>
+</header>
+    <section class="layout ">
+      <div class="content large-order-2">
+         
+
+        <div class="admonition caution">
+          <p class="admonition-title">Caution</p>
+          <p>
+             You are
+            reading an unstable version of this documentation.  If you want up-to-date information, please have a look at
+
+            <a href="../../stable/index.html">
+               4.5  </a
+            >.
+          </p>
+        </div>
+        
+
+        <div class="pre-content">
+          <div class="pre-content__left"><div class="breadcrumbs">
+  <span class="bread__item">
+    <a
+      href="https://scylla.docs.scylladb.com"
+      class="bread__highlight"
+    >
+      <i class="fas fa-home"></i> Scylla Documentation</a
+    ></span
+  >
+  
+  <span class="bread__item"
+    ><a href="index.html">Guides</a></span
+  >
+  
+  <span class="bread__item bread__item--last">Virtual Tables</span>
+</div></div>
+          <div class="pre-content__right"><ul
+  class="dropdown menu scylla-dropdown scylla-dropdown--contribute"
+  data-dropdown-menu
+>
+  <li class="scylla-dropdown__item">
+    <a class="scylla-dropdown__title" href="#">
+      <div class="scylla-dropdown__title--body">
+        <i class="icon fa fa-github" aria-hidden="true"></i>
+        Contribute
+      </div>
+      <i class="chevron scylla-icon scylla-icon--chevron-right"></i>
+    </a>
+    <ul class="menu scylla-dropdown__content">
+      <li>
+        <a
+          href="https://github.com/scylladb/scylla/issues/new?title=Issue in page Virtual Tables&&body=I%20would%20like%20to%20report%20an%20issue%20in%20page%20https://scylla.docs.scylladb.com/master/guides/virtual-tables%0A%0A%23%23%23%20Problem%0A%0A%23%23%23%20%20Suggest%20a%20fix"
+          target="_blank"
+          >Report a doc issue
+          <i class="icon fa fa-external-link" aria-hidden="true"></i
+        ></a>
+      </li>
+      
+      <li>
+             
+        <a
+          href="https://github.com/scylladb/scylla/edit/master/docs/guides/virtual-tables.md"
+          target="_blank"
+          >Edit this page
+          <i class="icon fa fa-external-link" aria-hidden="true"></i
+        ></a>
+      </li>
+      
+      <li>
+        <a href="https://docs.scylladb.com/contribute/" target="_blank"
+          >Learn how to contribute
+          <i class="icon fa fa-external-link" aria-hidden="true"></i
+        ></a>
+      </li>
+    </ul>
+  </li>
+</ul></div>
+        </div>
+         <div class="section" id="virtual-tables">
+<h1>Virtual Tables<a class="headerlink" href="#virtual-tables" title="Permalink to this headline">¶</a></h1>
+<p>Virtual tables are tables that are not backed by physical storage (sstables), instead they generate their content on-the-fly when queried, by a specific reader instance.
+This reader is created by a <code class="docutils literal notranslate"><span class="pre">mutation_source</span></code> object stored in the <code class="docutils literal notranslate"><span class="pre">table</span></code> instance, set previously by <code class="docutils literal notranslate"><span class="pre">table::set_virtual_reader()</span></code>.
+So on a very low level, a table is virtual, if one calls <code class="docutils literal notranslate"><span class="pre">table::set_virtual_reader()</span></code> in its <code class="docutils literal notranslate"><span class="pre">table</span></code> instance.</p>
+<p>Virtual tables allow for exposing information already available in memory to the user in the form of a CQL table.
+They are much more lightweight than their regular counterparts and they completely lack all the burden and overhead of updating a persistent storage and keeping it consistent with the already existing in-memory structures.
+Instead virtual table readers can just translate these in-memory structures into CQL results at the time they are queried.
+These tables completely look and act like regular tables from a user’s point of view, which is the entire point: the user can use an interface they are already familiar with to query and manipulate data.</p>
+<div class="section" id="what-is-a-good-candidate-for-a-virtual-table">
+<h2>What is a good candidate for a virtual table?<a class="headerlink" href="#what-is-a-good-candidate-for-a-virtual-table" title="Permalink to this headline">¶</a></h2>
+<p>In general a good candidate for a virtual table has to match the following conditions:</p>
+<ol class="simple">
+<li><p>It exposes data readily available in in-memory structures of the node. The data doesn’t have to be related to the node, it can be about the entire cluster too.</p></li>
+<li><p>The amount of data is small to moderate (partitions/rows in the order of low thousands).</p></li>
+<li><p>The data is not available from other tables, like regular system tables.</p></li>
+</ol>
+</div>
+<div class="section" id="information-retrieval-nodetool-commands-as-virtual-tables">
+<h2>Information retrieval nodetool commands as virtual tables<a class="headerlink" href="#information-retrieval-nodetool-commands-as-virtual-tables" title="Permalink to this headline">¶</a></h2>
+<p>Some time ago we started adding virtual tables to replace information retrieval nodetool commands.
+These nodetool commands are currently served by one or more REST API endpoints.
+CQL tables are a natural fit to replace these nodetool commands:</p>
+<ul class="simple">
+<li><p>One can retrieve the information with just a CQL client, instead of having to have both jmx and nodetool setup;</p></li>
+<li><p>Remote access: REST and therefore nodetool is only accessible on the same machine the node lives on for security considerations (see below);</p></li>
+<li><p>Security: CQL has authentication and authorization already, with fine-grained RBAC support;</p></li>
+<li><p>Filtering and aggregation: CQL allows for filtering and selecting rows/columns as well as aggregating them;</p></li>
+</ul>
+<p>Even though not widely known, CQL also has built-in JSON support (<code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">json...</span></code>) so if somebody prefers JSON (used by REST) they can still use JSON with CQL too.</p>
+</div>
+<div class="section" id="how-to-add-a-new-virtual-table">
+<h2>How to add a new virtual table?<a class="headerlink" href="#how-to-add-a-new-virtual-table" title="Permalink to this headline">¶</a></h2>
+<p>The process of adding a new virtual table is as follows:</p>
+<ul class="simple">
+<li><p>Choose the appropriate class to inherit from: <code class="docutils literal notranslate"><span class="pre">db::memtable_filling_virtual_table</span></code> or <code class="docutils literal notranslate"><span class="pre">db::streaming_virtual_table</span></code> (located in <code class="docutils literal notranslate"><span class="pre">db/virtual_table.hh</span></code>);</p></li>
+<li><p>Implement the interface generating the data, mind shard awareness and query restrictions if they apply;</p></li>
+<li><p>Instantiate and register your virtual table in <code class="docutils literal notranslate"><span class="pre">register_virtual_tables()</span></code> in <code class="docutils literal notranslate"><span class="pre">db/system_keyspace.cc</span></code>;</p></li>
+</ul>
+<div class="section" id="choosing-the-right-class-for-you-virtual-table">
+<h3>Choosing the right class for you virtual table<a class="headerlink" href="#choosing-the-right-class-for-you-virtual-table" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="memtable-filling-virtual-table">
+<h4>memtable_filling_virtual_table<a class="headerlink" href="#memtable-filling-virtual-table" title="Permalink to this headline">¶</a></h4>
+<p>If your table generates a constant (that is known in advance) and small amount of data you should use the <code class="docutils literal notranslate"><span class="pre">db::memtable_filling_virtual_table</span></code>.
+This works by first inserting all data into a memtable, then querying said memtable. The memtable takes care of all aspects of the query: read range restrictions, slicing, etc.
+Your implementation’s only job is to generate the data and feed it to the <code class="docutils literal notranslate"><span class="pre">mutation_sink</span></code> parameter of <code class="docutils literal notranslate"><span class="pre">execute()</span></code>.
+Partitions and rows can be generated in any order, the memtable takes care of ordering it.
+Shard awareness still applies, see the <a class="reference external" href="#shard-awareness">shard awareness</a> section.</p>
+</div>
+<div class="section" id="streaming-virtual-table">
+<h4>streaming_virtual_table<a class="headerlink" href="#streaming-virtual-table" title="Permalink to this headline">¶</a></h4>
+<p>If your table generates either a lot of data (say 100+ lines) or the amount of data generated is not fixed but dynamic, you should use <code class="docutils literal notranslate"><span class="pre">db::streaming_virtual_table</span></code>.
+This works by generating one partition at a time, fragment-by-fragment, yielding when the data fills a reader buffer.
+Your implementation has to make sure partitions are generated in the right order (very important)!!! The same goes for rows.
+Although the <code class="docutils literal notranslate"><span class="pre">streaming_virtual_table</span></code> will take care of dropping any partitions/rows that are outside of the read-range, this is wasteful, so you also should avoid emitting any partitions that are not in the read-range – obtainable from <code class="docutils literal notranslate"><span class="pre">query_restrictions</span></code> parameter of <code class="docutils literal notranslate"><span class="pre">execute()</span></code>.
+Shard awareness also applies, see the <a class="reference external" href="#shard-awareness">shard awareness</a> section.</p>
+<p>A typical algorithm works like this:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">future</span><span class="o">&lt;&gt;</span> <span class="n">execute</span><span class="p">(</span><span class="n">reader_permit</span> <span class="n">permit</span><span class="p">,</span> <span class="n">result_collector</span><span class="o">&amp;</span> <span class="n">result</span><span class="p">,</span> <span class="k">const</span> <span class="n">query_restrictions</span><span class="o">&amp;</span> <span class="n">qr</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
+    <span class="c1">// First produce all possible partition keys for the to-be-emitted data</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">dht</span><span class="o">::</span><span class="n">decorated_key</span><span class="o">&gt;</span> <span class="n">keys</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="nl">my_key</span> <span class="p">:</span> <span class="n">generate_all_keys</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">dk</span> <span class="o">=</span> <span class="n">make_decorated_key</span><span class="p">(</span><span class="n">my_key</span><span class="p">);</span>
+        <span class="c1">// Drop those that either don&#39;t belong to this shard (see shard awareness) or are outside the read range (not a must but nice-to-do)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">this_shard_owns</span><span class="p">(</span><span class="n">dk</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">contains_key</span><span class="p">(</span><span class="n">qr</span><span class="p">.</span><span class="n">partition_range</span><span class="p">(),</span> <span class="n">dk</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">keys</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">dk</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Sort keys in token order</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">dht</span><span class="o">::</span><span class="n">ring_position_less_comparator</span><span class="p">(</span><span class="o">*</span><span class="n">_s</span><span class="p">));</span>
+
+    <span class="c1">// Iterate over the keys and generate content for them</span>
+    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">dk</span> <span class="p">:</span> <span class="n">keys</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">co_await</span> <span class="n">result</span><span class="p">.</span><span class="n">emit_partition_start</span><span class="p">(</span><span class="n">dk</span><span class="p">.</span><span class="n">key</span><span class="p">);</span>
+        <span class="c1">// generate rows, in clustering order!!!</span>
+        <span class="n">co_await</span> <span class="n">result</span><span class="p">.</span><span class="n">emit_partition_end</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="shard-awareness">
+<h4>Shard awareness<a class="headerlink" href="#shard-awareness" title="Permalink to this headline">¶</a></h4>
+<p>Virtual tables have to take care to not emit partitions that don’t belong to the shard the read runs on.
+When querying a virtual table, the normal read algorithms are used.
+These expect that the table exists on all shards and on each shard the table will only emit data, whose token belongs to that shard according to the table’s (schema’s) sharder.
+For convenience the virtual table infrastructure (<code class="docutils literal notranslate"><span class="pre">db::virtual_table</span></code>) takes care of dropping all partitions from your virtual table output that doesn’t belong to the current shard.
+This is inefficient however because the data is produced just to be dropped and filtering is not free either.
+So virtual table implementations can instead do this filtering themselves and promise to the <code class="docutils literal notranslate"><span class="pre">db::virtual_table</span></code> (their ancestor class) that they are shard aware and will take care of this.
+They can do this by setting <code class="docutils literal notranslate"><span class="pre">_shard_aware</span> <span class="pre">=</span> <span class="pre">true</span></code> in their constructor.
+If your table generates very little data and generating partitions is not much more expensive then generating just the keys, you can opt for <code class="docutils literal notranslate"><span class="pre">db::virtual_table</span></code> to take care of shard awareness for you.
+You can do this by setting <code class="docutils literal notranslate"><span class="pre">_shard_aware</span> <span class="pre">=</span> <span class="pre">false</span></code> in the constructor of your virtual table.</p>
+<p>Whichever you choose to do, just make sure to match your implementation with what you set <code class="docutils literal notranslate"><span class="pre">_shard_aware</span></code> to, doing otherwise can cause all sorts of unpredictable errors when your table is queried.</p>
+</div>
+</div>
+</div>
+</div>
+  <div class="content-navigation">
+  <div class="navigation navigation--prev">
+    <a class="navigation__link" href="tracing.html">
+      <button class="navigation__button">
+        <i class="scylla-icon scylla-icon--chevron-left"></i>
+      </button>
+      <div class="navigation__title">
+        <span class="colored">PREVIOUS</span> <br />Tracing
+      </div>
+    </a>
+  </div>
+  <div class="navigation navigation--next">
+    <a class="navigation__link" href="../contribute/index.html">
+      <div class="navigation__title">
+        <span class="colored">NEXT</span> <br />Contribute
+      </div>
+      <button class="navigation__button">
+        <i class="scylla-icon scylla-icon--chevron-right"></i>
+      </button>
+    </a>
+  </div>
+</div> 
+      </div>
+      <div
+        class="sidebar-left  large-order-1"
+      > <div id="side-nav" class="side-nav" data-closable data-toggler=".show">
+  <div class="side-nav__search">
+    <div class="search-box">
+      <ci-search></ci-search>
+    </div>
+  </div>
+  <div class="side-nav__versions">
+     <ul
+  class="dropdown menu scylla-dropdown scylla-dropdown--versions "
+  data-dropdown-menu
+>
+  <li class="scylla-dropdown__item">
+    <a class="scylla-dropdown__title" href="#">
+       master 
+      <i class="chevron scylla-icon scylla-icon--chevron-right"></i>
+    </a>
+    <ul class="menu scylla-dropdown__content"> 
+      <li>
+        <a href="../../stable/index.html"
+          >4.5</a
+        >
+      </li>
+       
+      <li>
+        <a href="../../branch-4.4/index.html"
+          >4.4</a
+        >
+      </li>
+       
+    </ul>
+  </li>
+</ul> 
+  </div>
+  <div class="side-nav__content">
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Scylla Developer Documentation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../alternator/alternator.html">Alternator: DynamoDB API in Scylla</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="scylla-icon scylla-icon--expand"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../alternator/getting-started.html">Getting Started With ScyllaDB Alternator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alternator/compatibility.html">Scylla Alternator for DynamoDB users</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../design-notes/index.html">Design Notes</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="scylla-icon scylla-icon--expand"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/IDL.html">IDL compiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/cdc.html">CDC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/compaction_controller.html">The Compaction Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/cql-extensions.html">Scylla CQL extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/cql-extensions-internal.html">Scylla CQL extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/cql3-type-mapping.html">CQL3 Type Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/hinted_handoff_design.html">Hinted Handoff Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/isolation.html">Performance Isolation in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/lua-type-mapping.html">CQL to Lua type mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/metrics.html">Scylla Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/migrating-from-users-to-roles.html">Migrating from users to roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/paged-queries.html">Paged queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/protocol-extensions.html">Protocol extensions to the Cassandra Native Protocol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/protocols.html">Ports and protocols in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/redis.html">Redis API in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/repair_based_node_ops.html">Repair based node operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/reverse-reads.html">Reverse reads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/row_cache.html">Row Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/row_level_repair.html">Row level repair</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/secondary_index.html">Secondary indexes in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/sstable-scylla-format.html">File format of the Scylla.db sstable component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/sstables-directory-structure.html">sstables directory structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/system_keyspace.html">System keyspace layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/system_keyspace.html#virtual-tables-in-the-system-keyspace">Virtual tables in the system keyspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/system_schema_keyspace.html">System schema keyspace layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-notes/wasm.html">WASM support for user-defined functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Guides</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="scylla-icon scylla-icon--expand"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="HACKING.html">Guidelines for developing Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_v2.html">Scylla RESTful API V2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="building.html">Building Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html">Debugging with GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker-hub.html">Docker Hub Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html">Logging in Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tracing.html">Tracing</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Virtual Tables</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contribute/index.html">Contribute</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="scylla-icon scylla-icon--expand"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/CONTRIBUTING.html">Contributing to Scylla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/backport.html">Backport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/maintainer.html">Maintainer’s handbook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contribute/review-checklist.html">Review Checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../service_levels.html">Service Level Distributed Data</a></li>
+</ul>
+
+  </div>
+</div>
+      </div>
+      
+      <div class="sidebar-right large-order-3">
+         <div class="secondary-side-nav">
+  <div class="secondary-side-nav__content">
+    <p class="topic-title">On this page</p>
+    <ul>
+<li><a class="reference internal" href="#">Virtual Tables</a><ul>
+<li><a class="reference internal" href="#what-is-a-good-candidate-for-a-virtual-table">What is a good candidate for a virtual table?</a></li>
+<li><a class="reference internal" href="#information-retrieval-nodetool-commands-as-virtual-tables">Information retrieval nodetool commands as virtual tables</a></li>
+<li><a class="reference internal" href="#how-to-add-a-new-virtual-table">How to add a new virtual table?</a><ul>
+<li><a class="reference internal" href="#choosing-the-right-class-for-you-virtual-table">Choosing the right class for you virtual table</a><ul>
+<li><a class="reference internal" href="#memtable-filling-virtual-table">memtable_filling_virtual_table</a></li>
+<li><a class="reference internal" href="#streaming-virtual-table">streaming_virtual_table</a></li>
+<li><a class="reference internal" href="#shard-awareness">Shard awareness</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</div> 
+      </div>
+    </section>
+
+    <footer class="footer">
+  <div class="footer-group">
+    <div class="footer-top">
+      <a class="footer-logo" href="https://www.scylladb.com"
+        ><img
+          src="../_static/img/logo-scylla-horizontal-RGB.svg"
+          alt="Logo"
+      /></a>
+      <div class="footer-links">
+        <a class="footer-links__link" href="https://docs.scylladb.com/">Docs</a>
+        <a
+          class="footer-links__link"
+          href="https://www.scylladb.com/company/contact-us/"
+          >Contact Us</a
+        >
+        <a class="footer-links__link" href="https://www.scylladb.com/company/"
+          >About Us</a
+        >
+      </div>
+      <div class="footer-actions">
+        <a
+          class="footer-actions__link"
+          href="https://groups.google.com/g/scylladb-users"
+          target="_blank"
+          ><span
+            data-tooltip
+            tabindex="1"
+            title="User mailing list"
+            data-position="bottom"
+          >
+            <img
+              src="../_static/img/icons/icon-mail-list.svg"
+              alt="Mail List Icon"
+            />
+          </span>
+        </a>
+        <a
+          class="footer-actions__link"
+          href="http://slack.scylladb.com/"
+          target="_blank"
+          ><span
+            data-tooltip
+            tabindex="1"
+            title="User Slack channel"
+            data-position="bottom"
+          >
+            <img
+              src="../_static/img/icons/icon-slack.svg"
+              alt="Slack Icon"
+          /></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom__copyright"> &#169; 2021, ScyllaDB. All rights reserved.
+      </div>
+      <div class="footer-bottom__last-updated">
+        Last updated on 05 December 2021.
+      </div>
+      <div class="footer-bottom__version">
+        Powered by
+        <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a> &amp;
+        <a href="https://sphinx-theme.scylladb.com/"
+          >ScyllaDB Theme 1.0.5</a
+        >
+      </div>
+    </div>
+  </div>
+</footer>
+
+    <noscript>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-T8P2JP"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe>
+    </noscript>
+  </body>
+</html>
